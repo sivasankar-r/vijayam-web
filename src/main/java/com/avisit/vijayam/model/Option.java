@@ -73,14 +73,12 @@ public class Option {
 	}
 	
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 	    return content!=null? this.getClass().hashCode()+content.hashCode() : super.hashCode();
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 	    return questionId+":::"+optionId+":::"+content;
 	}
 }
