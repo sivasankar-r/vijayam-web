@@ -1,40 +1,78 @@
 package com.avisit.vijayam.model;
 
+import java.util.List;
+
 public class Course {
-	private int contentProviderId;
-	private int courseId;
+	private int id;
 	private String name;
 	private String description;
+	private String imageName;
 	private boolean enabledFlag;
-	
-	public int getContentProviderId() {
-		return contentProviderId;
+	private String contentProviderId;
+	private int sortOrder;
+	private List<Topic> topicList;
+
+	public int getId() {
+		return id;
 	}
-	public void setContentProviderId(int contentProviderId) {
-		this.contentProviderId = contentProviderId;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	public int getCourseId() {
-		return courseId;
-	}
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
 	public boolean isEnabledFlag() {
 		return enabledFlag;
 	}
+
 	public void setEnabledFlag(boolean enabledFlag) {
 		this.enabledFlag = enabledFlag;
+	}
+
+	public String getContentProviderId() {
+		return contentProviderId;
+	}
+
+	public void setContentProviderId(String contentProviderId) {
+		this.contentProviderId = contentProviderId;
+	}
+
+	public int getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+	public List<Topic> getTopicList() {
+		return topicList;
+	}
+
+	public void setTopicList(List<Topic> topicList) {
+		this.topicList = topicList;
 	}
 }

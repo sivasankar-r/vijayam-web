@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -32,6 +33,24 @@ public class CourseRestService {
 		}catch(DataAccessException exception){
 			throw new InternalServerException("Unknown Exception Occurred");
 		}
+		return courseList;
+	}
+	
+	@GET
+	@Path("/contentProvider/{param}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Course> fetchCourseByProvider(@PathParam("param") String contentProviderId) {
+		List<Course> courseList = null;
+		if(contentProviderId !=null && !contentProviderId.isEmpty()){
+			try{
+				courseList = courseService.fetchCourseByProvider(contentProviderId);
+			} catch(DataAccessException exception){
+				throw new InternalServerException("Unknown Exception Occurred");
+			} catch (NumberFormatException nfe) {
+				throw new InternalServerException("Content provider id should be a valid integer");
+			}
+		}
+		
 		return courseList;
 	}
 	

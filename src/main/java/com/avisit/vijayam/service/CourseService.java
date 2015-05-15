@@ -19,4 +19,10 @@ public class CourseService {
 		courseList = courseDao.getAllCourses();
 		return courseList;
 	}
+	
+	public List<Course> fetchCourseByProvider(String contentProviderId){
+		List<Course> courseList = null;
+		courseList = courseDao.getCourseByProvider(contentProviderId);
+		return courseList;
+	}
 }
