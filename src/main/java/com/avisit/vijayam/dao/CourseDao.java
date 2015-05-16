@@ -26,7 +26,7 @@ public class CourseDao {
 		List<Course> courseList = null;
 		courseList = jdbcTemplate.query(query, new Object[]{contentProviderId, 1}, new BeanPropertyRowMapper<Course>(Course.class));
 		for(Course course : courseList) {
-			List<Topic> topicList = jdbcTemplate.query("select id, name, description, enabledFlag, sortOrder FROM topic where courseId = ? and enabledFlag = ? ORDER BY sortOrder", new Object[]{course.getId(), 1}, new BeanPropertyRowMapper<Topic>(Topic.class));
+			List<Topic> topicList = jdbcTemplate.query("select id, name, description, enabledFlag, sortOrder, courseId FROM topic where courseId = ? and enabledFlag = ? ORDER BY sortOrder", new Object[]{course.getId(), 1}, new BeanPropertyRowMapper<Topic>(Topic.class));
 			course.setTopicList(topicList);
 		}
 		return courseList;
