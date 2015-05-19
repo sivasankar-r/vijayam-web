@@ -1,5 +1,7 @@
 package com.avisit.vijayam.model;
 
+import java.util.List;
+
 public class Topic {
 	private int id;
 	private String name;
@@ -7,6 +9,7 @@ public class Topic {
 	private boolean enabledFlag;
 	private int courseId;
 	private int sortOrder;
+	private List<Question> questions;
 
 	public int getId() {
 		return id;
@@ -54,5 +57,13 @@ public class Topic {
 
 	public void setSortOrder(int sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 }

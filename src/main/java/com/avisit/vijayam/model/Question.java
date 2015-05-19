@@ -11,7 +11,7 @@ public class Question {
 	private int points = 1;
 	private int difficulty = 3;
 	private int sortOrder;
-	private List<Option> optionList = new ArrayList<Option>();
+	private List<Option> optionsList = new ArrayList<Option>();
 	
 	public Question(){
 		
@@ -73,20 +73,20 @@ public class Question {
 		return sortOrder;
 	}
 
-	public List<Option> getOptionList() {
-		return optionList;
+	public List<Option> getOptionsList() {
+		return optionsList;
 	}
 
-	public void setOptionList(List<Option> optionList) {
-		this.optionList = optionList;
+	public void setOptionsList(List<Option> optionsList) {
+		this.optionsList = optionsList;
 	}
 	
 	public void addOption(Option option){
-		this.optionList.add(option);
+		this.optionsList.add(option);
 	}
 
 	public void removeOption(Option optionToRemove) {
-		this.optionList.remove(optionToRemove);
+		this.optionsList.remove(optionToRemove);
 	}
 
 }
