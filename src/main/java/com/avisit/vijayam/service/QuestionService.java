@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.avisit.vijayam.dao.QuestionDao;
 import com.avisit.vijayam.model.Question;
 
-@Component
+@Service
 public class QuestionService {
 
 	@Autowired

@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/pages/templates/template2.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript">
+	 		function setNavCss(){
+         		document.getElementById("coursesLI").className = "active";
+         	}
+	 		
+	 		function editTopicModalShow(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#editTopicModal').modal('show');
+	 		    }
+	 		}
+	 		
+	 		function editTopicModalClose(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#editTopicModal').modal('hide');
+	 		    }
+	 		}
+		</script>
+		
+		<div class="span10">
+			<h:form id="breadCrumbsForm">
+        		<ul class="breadcrumb">
+					<ui:repeat id="breadCrumbList" value="#{topicController.breadCrumbs}" var="crumb">
+						<li>
+							<h:commandLink value="#{crumb}"></h:commandLink>
+							<span class="divider">/</span>
+						</li>
+					</ui:repeat>
+				</ul>
+        	</h:form>
+        </div>
+        
+		<div class="span10" id="addNewDiv">
+			<h:form id="addNewForm">
+				<div style="padding-bottom : 10px;">
+					<h:message class="alert alert-error" for=":addNewForm:newTopicName" />
+				</div>
+				
+				<div class="alert" style="display:#{topicController.message != null ? 'block' : 'none'}">
+			    	<h:outputText id="errorMsg" value="#{topicController.message}"/>
+  				</div>
+
+				<table id="newItem" class="table table-bordered table-hover">
+					<tbody>
+						<tr>
+							<td>#</td>
+							<td><h:inputText id="newTopicName"
+									value="#{topicController.newTopic.name}" required="true" requiredMessage="Please enter topic title" pt:placeholder="Topic Name"/></td>
+							<td><h:inputText id="newTopicDesc"
+									value="#{topicController.newTopic.description}" pt:placeholder="Description"/></td>
+							<td><label class="checkbox"> <h:selectBooleanCheckbox
+										value="#{topicController.newTopic.enabledFlag}"
+										id="enabledFlag" /> Enabled?
+							</label></td>
+							<td colspan="2"><h:commandLink class="btn btn-primary"
+									action="#{topicController.addTopic}" value="Add New">
+									<!-- <f:ajax render="@all" execute="@form" /> -->
+								</h:commandLink></td>
+						</tr>
+					</tbody>
+				</table>
+			</h:form>
+		</div>
+		
+		<div class="span10" id="viewContent">
+			<h:form id="availableTopicsForm">
+				<table id="topicsTable" class="table table-bordered table-hover">
+					<tr>
+						<th>S.No</th>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Enabled</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+					<tbody>
+						<ui:repeat id="topicList" value="#{topicsMBean.paginator.model}"
+							var="topic" varStatus="index">
+							<tr>
+								<td>#{((index.index)+1)+((topicsMBean.paginator.recordsPerPage)*(topicsMBean.paginator.pageIndex-1))}</td>
+								<td><h:commandLink value="#{topic.name}"
+										action="#{topicController.loadQuestions}"
+										style="font-size: 14px;">
+										<f:setPropertyActionListener
+											target="#{topicController.selectedTopic}" value="#{topic}" />
+									</h:commandLink></td>
+								<td>#{topic.description}</td>
+								<td><h:commandLink id="toggleFlagLink"
+										action="#{topicController.toggleEnableFlag}" rel="tooltip"
+										title="#{topic.enabledFlag == true ? 'Click to Disable' : 'Click to Enable'}">
+										<i
+											class="icon-large #{topic.enabledFlag == true ? 'icon-ok-sign green' : 'icon-remove-sign red'}"></i>
+										<f:setPropertyActionListener
+											target="#{topicController.selectedTopic}" value="#{topic}" />
+									</h:commandLink></td>
+								<td><h:commandLink id="editTopicLink" rel="tooltip"
+										title="Edit Topic">
+										<i class="icon-large icon-pencil black"></i>
+										<f:setPropertyActionListener target="#{topicController.selectedTopic}" value="#{topic}" />
+										<f:ajax onevent="editTopicModalShow" />
+									</h:commandLink></td>
+								<td><h:commandLink id="deleteTopicLink"
+										action="#{topicController.deleteTopic}" rel="tooltip"
+										title="Delete Topic">
+										<i class="icon-large icon-trash black"></i>
+										<f:setPropertyActionListener target="#{topicController.selectedTopic}" value="#{topic}" />
+									</h:commandLink></td>
+							</tr>
+						</ui:repeat>
+					</tbody>
+				</table>
+
+				<ul class="pager">
+					<li class="previous"><h:commandLink value="&larr; Prev"
+							action="#{topicsMBean.paginator.prev}" /></li>
+					<h:outputText
+						value="#{topicsMBean.paginator.pageIndex} / #{topicsMBean.paginator.pages}" />
+					<li class="next"><h:commandLink value="Next &rarr;"
+							action="#{topicsMBean.paginator.next}" /></li>
+				</ul>
+				<h:inputHidden value="#{topicsMBean.paginator.pageIndex}" />
+			</h:form>
+
+			<div id="editTopicModal" class="modal hide fade">
+				<h:form id="editTopicModalForm">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 id="myModalLabel" class="alert">Edit Topic #{selectedTopic.name}</h3>
+					</div>
+					<div style="padding: 10px;">
+						<h:message class="alert alert-error" for=":editTopicModalForm:editTopicName" />
+					</div>
+					<div class="modal-body">
+						<table>
+							<tr>
+								<td>Topic Name</td>
+								<td><h:inputText id="editTopicName" style="width:200px;"
+										requiredMessage="Title is Mandatory" required="true"
+										value="#{topicController.selectedTopic.name}" /></td>
+							</tr>
+							<tr>
+								<td>Description</td>
+								<td><h:inputTextarea id="editTopicDesc"
+										style="width:200px;"
+										value="#{topicController.selectedTopic.description}" /></td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal">Cancel</button>
+						<h:commandLink class="btn btn-primary" action="#{topicController.editTopic}"
+							value="Save changes">
+						</h:commandLink>
+					</div>
+				</h:form>
+			</div>
+		</div>	
+	</ui:define>
+</ui:composition>
+</html>

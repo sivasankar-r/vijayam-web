@@ -47,7 +47,7 @@ public class CourseRestService {
 		List<Course> courseList = null;
 		if(params !=null && !params.isEmpty()){
 			try{
-				courseList = courseService.fetchCourseByProvider(params.getFirst("contentProviderId"));
+				courseList = courseService.fetchCourseTreeByProvider(params.getFirst("contentProviderId"));
 			} catch(DataAccessException exception){
 				throw new InternalServerException("Unknown Exception Occurred");
 			} catch (NumberFormatException nfe) {
@@ -65,7 +65,7 @@ public class CourseRestService {
 		List<Course> courseList = null;
 		if(contentProviderId !=null && !contentProviderId.isEmpty()){
 			try{
-				courseList = courseService.fetchCourseByProvider(contentProviderId);
+				courseList = courseService.fetchCourseTreeByProvider(contentProviderId);
 			} catch(DataAccessException exception){
 				throw new InternalServerException("Unknown Exception Occurred");
 			} catch (NumberFormatException nfe) {

@@ -1,12 +1,12 @@
 package com.avisit.vijayam.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.avisit.vijayam.dao.UserDao;
 import com.avisit.vijayam.model.User;
 
-@Component
+@Service
 public class UserService {
 	@Autowired
 	private UserDao userDao;

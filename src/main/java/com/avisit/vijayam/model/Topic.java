@@ -1,5 +1,6 @@
 package com.avisit.vijayam.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Topic {
@@ -9,6 +10,8 @@ public class Topic {
 	private boolean enabledFlag;
 	private int courseId;
 	private int sortOrder;
+	private Date createdTs;
+	private Date lastModifiedTs;
 	private List<Question> questions;
 
 	public int getId() {
@@ -59,6 +62,22 @@ public class Topic {
 		this.sortOrder = sortOrder;
 	}
 
+	public Date getCreatedTs() {
+		return createdTs;
+	}
+
+	public void setCreatedTs(Date createdTs) {
+		this.createdTs = createdTs;
+	}
+
+	public Date getLastModifiedTs() {
+		return lastModifiedTs;
+	}
+
+	public void setLastModifiedTs(Date lastModifiedTs) {
+		this.lastModifiedTs = lastModifiedTs;
+	}
+	
 	public List<Question> getQuestions() {
 		return questions;
 	}

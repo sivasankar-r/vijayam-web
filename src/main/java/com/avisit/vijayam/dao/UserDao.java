@@ -5,11 +5,11 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.avisit.vijayam.model.User;
 
-@Component
+@Repository
 public class UserDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;

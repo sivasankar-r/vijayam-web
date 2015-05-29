@@ -8,12 +8,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.avisit.vijayam.model.GcmContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Component
+@Service
 public class GcmSenderService {
 	
 	public void post(String apiKey, GcmContent gcmContent) {

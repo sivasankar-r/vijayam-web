@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.avisit.vijayam.dao.TopicDao;
 import com.avisit.vijayam.model.Topic;
 
-@Component
+@Service
 public class TopicService {
 	
 	@Autowired
@@ -27,5 +27,21 @@ public class TopicService {
 			topicList = topicDao.getTopicsByCourseId(courseId);	
 		}
 		return topicList;
+	}
+
+	public boolean toggleEnableFlag(Topic topic) {
+		return topicDao.toggleEnableFlag(topic) == 1;
+	}
+
+	public boolean editTopic(Topic topic) {
+		return topicDao.editTopic(topic) == 1;
+	}
+
+	public boolean deleteTopic(Topic topic) {
+		return topicDao.deleteTopic(topic) == 1;
+	}
+
+	public boolean addNew(Topic topic) {
+		return topicDao.insertTopic(topic) > 0;
 	}
 }
