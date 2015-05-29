@@ -25,8 +25,10 @@ public class LoginService {
 		try {
 			contentProvider = loginDao.isValidUser(username, password);
 		} catch (DataAccessException e) {
+			e.printStackTrace();
 			throw new Exception("Unknown Exception Occurred. Contact Administrator.", e);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw e;
 		} 
 		return contentProvider;
