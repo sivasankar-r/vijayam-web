@@ -57,7 +57,7 @@ public class LoginController {
 			contentProvider = loginService.isValidUser(contentProviderMBean.getContentProvider().getUsername(), contentProviderMBean.getContentProvider().getPassword());
 		} catch (Exception e) {
 			setLoginMessage(e.getMessage());
-			throw e;
+			e.printStackTrace();
 		}
 		if(contentProvider!=null){
 			contentProviderMBean.getContentProvider().setContentProviderId(contentProvider.getContentProviderId());

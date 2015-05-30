@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/pages/templates/template2.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript">
+	 		function setNavCss(){
+         		document.getElementById("coursesLI").className = "active";
+         	}
+	 		
+	 		function editCourseModalShow(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#editCourseModal').modal('show');
+	 		    }
+	 		}
+	 		
+	 		function editCourseModalClose(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#editCourseModal').modal('hide');
+	 		    }
+	 		}
+		</script>
+		
+		<div class="span10">
+        	<h:form id="breadCrumbsForm">
+        		<ul class="breadcrumb">
+					<ui:repeat id="breadCrumbList" value="#{courseController.breadCrumbs}" var="crumb">
+						<li>
+							<h:commandLink value="#{crumb}"></h:commandLink>
+							<span class="divider">/</span>
+						</li>
+					</ui:repeat>
+				</ul>
+        	</h:form>
+        </div>
+        
+		<div class="span10" id="addNewDiv">
+			<h:form id="addNewForm">
+				<div style="padding-bottom : 10px;">
+					<h:message class="alert alert-error" for=":addNewForm:newCourseName" />
+				</div>
+				
+				<div class="alert" style="display:#{courseController.message != null ? 'block' : 'none'}">
+			    	<h:outputText id="errorMsg" value="#{courseController.message}"/>
+  				</div>
+
+				<table id="newItem" class="table table-bordered table-hover">
+					<tbody>
+						<tr>
+							<td>#</td>
+							<td><h:inputText id="newCourseName"
+									value="#{courseController.newCourse.name}" required="true" requiredMessage="Please enter course title" pt:placeholder="Course Name"/></td>
+							<td><h:inputText id="newCourseDesc"
+									value="#{courseController.newCourse.description}" pt:placeholder="Description"/></td>
+							<td><label class="checkbox"> <h:selectBooleanCheckbox
+										value="#{courseController.newCourse.enabledFlag}"
+										id="enabledFlag" /> Enabled?
+							</label></td>
+							<td colspan="2"><h:commandLink class="btn btn-primary"
+									action="#{courseController.addCourse}" value="Add New">
+									<!-- <f:ajax render="@all" execute="@form" /> -->
+								</h:commandLink></td>
+						</tr>
+					</tbody>
+				</table>
+			</h:form>
+		</div>
+		
+		<div class="span10" id="viewContent">
+			<h:form id="availableCoursesForm">
+				<table id="coursesTable" class="table table-bordered table-hover">
+					<tr>
+						<th>S.No</th>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Topic Count</th>
+						<th>Enabled</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+					<tbody>
+						<ui:repeat id="courseList" value="#{coursesMBean.paginator.model}"
+							var="course" varStatus="index">
+							<tr>
+								<td>#{((index.index)+1)+((coursesMBean.paginator.recordsPerPage)*(coursesMBean.paginator.pageIndex-1))}</td>
+								<td><h:commandLink value="#{course.name}"
+										action="#{topicController.loadTopics}"
+										style="font-size: 14px;">
+										<f:setPropertyActionListener
+											target="#{topicController.selectedCourse}" value="#{course}" />
+									</h:commandLink></td>
+								<td>#{course.description}</td>
+								<td>#{course.topicCount}</td>
+								<td><h:commandLink id="toggleFlagLink"
+										action="#{courseController.toggleEnableFlag}" rel="tooltip"
+										title="#{course.enabledFlag == true ? 'Click to Disable' : 'Click to Enable'}">
+										<i
+											class="icon-large #{course.enabledFlag == true ? 'icon-ok-sign green' : 'icon-remove-sign red'}"></i>
+										<f:setPropertyActionListener
+											target="#{courseController.selectedCourse}" value="#{course}" />
+									</h:commandLink></td>
+								<td><h:commandLink id="editCourseLink" rel="tooltip"
+										title="Edit Course">
+										<i class="icon-large icon-pencil black"></i>
+										<f:setPropertyActionListener target="#{courseController.selectedCourse}" value="#{course}" />
+										<f:ajax onevent="editCourseModalShow" />
+									</h:commandLink></td>
+								<td><h:commandLink id="deleteCourseLink"
+										action="#{courseController.deleteCourse}" rel="tooltip"
+										title="Delete Course">
+										<i class="icon-large icon-trash black"></i>
+										<f:setPropertyActionListener target="#{courseController.selectedCourse}" value="#{course}" />
+									</h:commandLink></td>
+							</tr>
+						</ui:repeat>
+					</tbody>
+				</table>
+
+				<ul class="pager">
+					<li class="previous"><h:commandLink value="&larr; Prev"
+							action="#{coursesMBean.paginator.prev}" /></li>
+					<h:outputText
+						value="#{coursesMBean.paginator.pageIndex} / #{coursesMBean.paginator.pages}" />
+					<li class="next"><h:commandLink value="Next &rarr;"
+							action="#{coursesMBean.paginator.next}" /></li>
+				</ul>
+				<h:inputHidden value="#{coursesMBean.paginator.pageIndex}" />
+			</h:form>
+
+			<div id="editCourseModal" class="modal hide fade">
+				<h:form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 id="myModalLabel" class="alert">Edit Course</h3>
+					</div>
+					<div class="modal-body">
+						<table>
+							<tr>
+								<td>Course Name</td>
+								<td><h:inputText id="editCourseName" style="width:200px;"
+										requiredMessage="Title is Mandatory" required="true"
+										value="#{courseController.selectedCourse.name}" /></td>
+							</tr>
+							<tr>
+								<td>Description</td>
+								<td><h:inputTextarea id="editCourseDesc"
+										style="width:200px;"
+										value="#{courseController.selectedCourse.description}" /></td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal">Cancel</button>
+						<h:commandLink class="btn btn-primary" action="#{courseController.editCourse}"
+							value="Save changes">
+						</h:commandLink>
+					</div>
+				</h:form>
+			</div>
+		</div>	
+	</ui:define>
+</ui:composition>
+</html>

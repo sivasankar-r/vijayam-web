@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Vijayam</title>
+	<link href="#{request.contextPath}/resources/css/bootstrap/bootstrap.min.css" rel="stylesheet"/>
+	<link href="#{request.contextPath}/resources/css/bootstrap/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<link href="#{request.contextPath}/resources/css/bootstrap/font-awesome.css" rel="stylesheet"/>
+	<script type="text/javascript" src="#{request.contextPath}/resources/js/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="#{request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
+	
+    <style type="text/css">
+		body {
+			padding-top: 60px;
+			padding-bottom: 40px;
+		}
+		.sidebar-nav {
+			padding: 9px 0;
+		}
+    
+		li a {
+			font-size:14px;
+		}
+		
+		a{
+			font-size:14px;
+		}
+		
+		a.btn.btn-primary{
+			color:#ffffff;
+		}
+		
+		.red{
+			color:#da4f49;
+		}
+          		
+        .green{
+        	color:#5bb75b;
+        }
+        .black{
+        	color:#000;
+        }
+        
+		.navbar-inner a.brand{
+			background-image: url("#{resource['img/vijayam_ic_launcher.png']}");
+			z-index: 10;
+			padding-left: 50px;
+			padding-right: 50px;
+			text-align: right;
+			background-repeat: no-repeat;
+			background-position: left;
+		}
+		
+		.navbar .brand {
+			font-family:"lucida calligraphy";
+			font-size:32px;
+		}
+		
+    </style>
+    
+    <script type="text/javascript">
+    	window.history.forward();
+		$(document).ready(function(){
+	 	    $("[rel=tooltip]").tooltip({ placement: 'top'});
+	 	});
+	</script>
+</h:head>
+
+<f:view>
+	<h:body onload="setNavCss();">
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Vijayam</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-form pull-right">
+              <li class="dropdown navbar-form pull-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{contentProviderMBean.contentProvider.username}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">My Account</a></li>
+                  <li><a href="#">Sign Out</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Help</li>
+                  <li><a href="#">Report Issue</a></li>
+                  <li><a href="#">Feedback</a></li>
+                  <li><a href="#">Help Center</a></li>
+                </ul>
+              </li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav">
+          	<h:form id="navListForm">
+	            <ul class="nav nav-list">
+					<li id="dashboardLI"><h:commandLink value="Dashboard" action="#{dashboardController.loadDashboard}"/></li>
+					<li class="divider"></li>
+					<li class="nav-header">Content Management</li>
+					<li id="coursesLI"><h:commandLink value="Courses" action="#{courseController.loadCourses}"/></li>
+	              	<li id="examsLI"><h:commandLink value="Exams" action="#{examController.loadAllExams}"/></li>
+					<li class="divider"></li>
+					<li class="nav-header">User Management</li>
+					<li id="userManageLI"><h:commandLink value="Add / Update / Delete"/></li>
+					<li id="assignExamLI"><h:commandLink value="Assign Exam"/></li>
+					<li class="divider"></li>
+					<li class="nav-header">Analysis</li>
+					<li id="userWiseAnalysisLI"><h:commandLink value="User-Wise"/></li>
+					<li id="examWiseAnalysisLI"><h:commandLink value="Exam-Wise"/></li>
+					<li class="divider"></li>
+	              <li class="nav-header">Notifications</li>
+	              <li id="notificationsLI"><h:outputLink value="http://ec2-52-25-72-42.us-west-2.compute.amazonaws.com:8001/">Broad Notifications</h:outputLink></li>
+	            </ul>
+            </h:form>
+          </div><!--/.well -->
+        </div>
+        
+        <div id="content" >
+			<ui:insert name="content">
+
+			</ui:insert>
+		</div>
+       </div>
+      </div>
+      	
+	</h:body>
+	
+</f:view>
+
+</html>

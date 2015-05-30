@@ -21,18 +21,6 @@
 		<slf4j.version>1.7.5</slf4j.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-			<scope>runtime</scope>
-		</dependency>
 		<!-- JSF dependencies -->
 		<dependency>
 			<groupId>com.sun.faces</groupId>
