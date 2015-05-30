@@ -54,8 +54,10 @@ public class LoginController {
 		String toPage = null;
 		ContentProvider contentProvider = null;
 		try {
+			System.out.println("*********** sysout working ");
 			contentProvider = loginService.isValidUser(contentProviderMBean.getContentProvider().getUsername(), contentProviderMBean.getContentProvider().getPassword());
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			setLoginMessage(e.getMessage());
 			e.printStackTrace();
 		}
