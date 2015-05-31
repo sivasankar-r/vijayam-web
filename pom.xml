@@ -108,14 +108,14 @@
 			<version>1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.paginationspring</groupId>
-			<artifactId>pagination</artifactId>
-			<version>1.0.3</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.paginationspring</groupId>
-			<artifactId>pagination-taglibs</artifactId>
-			<version>1.0.3</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.2</version>
 		</dependency>
 	</dependencies>
 
