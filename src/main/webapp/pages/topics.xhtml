@@ -88,12 +88,7 @@
 							var="topic" varStatus="index">
 							<tr>
 								<td>#{((index.index)+1)+((topicsMBean.paginator.recordsPerPage)*(topicsMBean.paginator.pageIndex-1))}</td>
-								<td><h:commandLink value="#{topic.name}"
-										action="#{topicController.loadQuestions}"
-										style="font-size: 14px;">
-										<f:setPropertyActionListener
-											target="#{topicController.selectedTopic}" value="#{topic}" />
-									</h:commandLink></td>
+								<td>#{topic.name}</td>
 								<td>#{topic.description}</td>
 								<td><h:commandLink id="toggleFlagLink"
 										action="#{topicController.toggleEnableFlag}" rel="tooltip"
