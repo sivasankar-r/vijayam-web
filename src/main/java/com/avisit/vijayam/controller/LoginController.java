@@ -56,13 +56,11 @@ public class LoginController {
 		String toPage = null;
 		ContentProvider contentProvider = null;
 		try {
-			System.out.println("*********** sysout working ");
 			contentProvider = loginService.isValidUser(contentProviderMBean.getContentProvider().getUsername(), contentProviderMBean.getContentProvider().getPassword());
+			logger.info("Login Successful... Username : " + contentProviderMBean.getContentProvider().getUsername());
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			setLoginMessage(e.getMessage());
-			e.printStackTrace();
-			logger.debug(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 		if(contentProvider!=null){
 			contentProviderMBean.getContentProvider().setContentProviderId(contentProvider.getContentProviderId());
