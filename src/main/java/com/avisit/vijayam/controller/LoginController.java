@@ -3,6 +3,8 @@ package com.avisit.vijayam.controller;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,7 @@ import com.avisit.vijayam.service.LoginService;
 @ManagedBean
 @RequestScoped
 public class LoginController {
-	
+	Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
 	private ContentProviderMBean contentProviderMBean;
 	
@@ -60,6 +62,7 @@ public class LoginController {
 			System.out.println(e.getMessage());
 			setLoginMessage(e.getMessage());
 			e.printStackTrace();
+			logger.debug(e.getMessage(), e);
 		}
 		if(contentProvider!=null){
 			contentProviderMBean.getContentProvider().setContentProviderId(contentProvider.getContentProviderId());
