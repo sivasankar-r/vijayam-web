@@ -87,10 +87,6 @@ public class CourseDao {
 	}
 
 	public int deleteCourse(Course course) {
-		int updateCount = 0; 
-		if (course.getId() > 0) {
-			updateCount = jdbcTemplate.update("delete from course WHERE id=?", new Object[] { course.getId() });
-		}
-		return updateCount;
+		return jdbcTemplate.update("call proc_delete_course_tree(?)", course.getId());
 	}
 }

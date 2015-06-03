@@ -63,11 +63,7 @@ public class TopicDao {
 	}
 
 	public int deleteTopic(Topic topic) {
-		int updateCount = 0; 
-		if (topic.getId() > 0) {
-			updateCount = jdbcTemplate.update("delete from topic WHERE id=?", new Object[] { topic.getId() });
-		}
-		return updateCount;
+		return jdbcTemplate.update("call proc_delete_topic_tree(?)", topic.getId());
 	}
 
 	public int insertTopic(Topic topic) {

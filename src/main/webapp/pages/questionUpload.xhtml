@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/pages/templates/template2.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript">
+	 		function setNavCss(){
+         		document.getElementById("coursesLI").className = "active";
+         	}
+		</script>
+		<div class="span10">
+			<h:form id="downloadForm">
+				<h:messages style="color:red;margin:8px;" />
+				<div style="float: right;">
+  					<h:outputLink class="btn btn-primary" value="#{request.contextPath}/resources/files/Questions_Upload_Template.xls">Download Template</h:outputLink>
+  				</div>
+			</h:form>
+		</div>
+		<div class="span10" >
+			<h:form id = "uploadForm" enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td>
+							<h:inputFile class="btn btn-file" id="file" value="#{questionUploadController.filePart}" validator="#{questionUploadController.validateFile}"/>
+						</td>
+					</tr>
+					<tr></tr>
+					<tr>
+						<td>
+							<h:commandLink class="btn btn-primary" value="Upload Questions" action="#{questionUploadController.upload}">
+								<f:ajax execute="file" render="@all"/>
+							</h:commandLink>
+						</td>
+					</tr>
+				</table>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,8 +1,6 @@
 package com.avisit.vijayam.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -11,10 +9,9 @@ import javax.faces.bean.RequestScoped;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.managed.RepeatPaginator;
 import com.avisit.vijayam.managed.TopicsMBean;
-import com.avisit.vijayam.model.Course;
+import com.avisit.vijayam.managed.UserMBean;
 import com.avisit.vijayam.model.Topic;
 import com.avisit.vijayam.service.TopicService;
 
@@ -23,30 +20,25 @@ import com.avisit.vijayam.service.TopicService;
 @RequestScoped
 public class TopicController {
 	@Autowired
-	private ContentProviderMBean contentProviderMBean;
+	private UserMBean userMBean;
 	@Autowired
 	private TopicService topicService;
 	@Autowired
 	private TopicsMBean topicsMBean;
-	
 	private String message;
-	private Topic selectedTopic;
 	private Topic newTopic;
-	private Course selectedCourse;
-	private List<String> breadCrumbs;
 	
 	@PostConstruct
 	public void init() {
 		newTopic = new Topic();
-		breadCrumbs = new ArrayList<String>();
 	}
 	
-	public ContentProviderMBean getContentProviderMBean() {
-		return contentProviderMBean;
+	public UserMBean getUserMBean() {
+		return userMBean;
 	}
 
-	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
-		this.contentProviderMBean = contentProviderMBean;
+	public void setUserMBean(UserMBean userMBean) {
+		this.userMBean = userMBean;
 	}
 
 	public TopicService getTopicService() {
@@ -73,14 +65,6 @@ public class TopicController {
 		this.message = message;
 	}
 
-	public Topic getSelectedTopic() {
-		return selectedTopic;
-	}
-
-	public void setSelectedTopic(Topic selectedTopic) {
-		this.selectedTopic = selectedTopic;
-	}
-
 	public Topic getNewTopic() {
 		return newTopic;
 	}
@@ -89,39 +73,25 @@ public class TopicController {
 		this.newTopic = newTopic;
 	}
 
-	public Course getSelectedCourse() {
-		return selectedCourse;
-	}
-
-	public void setSelectedCourse(Course selectedCourse) {
-		this.selectedCourse = selectedCourse;
-	}
-
-	public List<String> getBreadCrumbs() {
-		return breadCrumbs;
-	}
-
-	public void setBreadCrumbs(List<String> breadCrumbs) {
-		this.breadCrumbs = breadCrumbs;
-	}
-
 	public String loadTopics() {
 		message = null;
 		String toPage = "courses";
-		if(selectedCourse!=null){
-			topicsMBean.setPaginator(new RepeatPaginator<Topic>(topicService.fetchTopicsByCourseId(selectedCourse.getId())));
-			breadCrumbs.clear();
-			breadCrumbs.add("All Courses");
-			breadCrumbs.add(selectedCourse.getName());
+		int size = userMBean.getBreadCrumbs().size();
+		for(int i = size-1; i >= 1; i--){
+			userMBean.getBreadCrumbs().remove(i);	
+		}
+		if(userMBean.getSelectedCourse()!=null){
+			topicsMBean.setPaginator(new RepeatPaginator<Topic>(topicService.fetchTopicsByCourseId(userMBean.getSelectedCourse().getId())));
+			userMBean.getBreadCrumbs().add(userMBean.getSelectedCourse().getName());
 			toPage = "topics";
 		}
 		return toPage;
 	}
 	
 	public void toggleEnableFlag() {
-		if(selectedTopic!=null){
-			if(topicService.toggleEnableFlag(selectedTopic)){
-				message = selectedTopic.isEnabledFlag() ? "Info : Topic disabled" : "Info : Topic enabled" ;
+		if(userMBean.getSelectedTopic()!=null){
+			if(topicService.toggleEnableFlag(userMBean.getSelectedTopic())){
+				message = userMBean.getSelectedTopic().isEnabledFlag() ? "Info : Topic disabled" : "Info : Topic enabled" ;
 				loadTopics();
 			} else {
 				message = "Error : Failed to toggle the topic enable / disable";
@@ -130,8 +100,8 @@ public class TopicController {
 	}
 	
 	public void editTopic() {
-		if(selectedTopic!=null){
-			if(topicService.editTopic(selectedTopic)){
+		if(userMBean.getSelectedTopic()!=null){
+			if(topicService.editTopic(userMBean.getSelectedTopic())){
 				loadTopics();
 				message = "Info : Course updated successfully";
 			} else {
@@ -141,20 +111,16 @@ public class TopicController {
 	}
 	
 	public void deleteTopic() {
-		if(selectedTopic!=null){
-			if(topicService.deleteTopic(selectedTopic)){
-				loadTopics();
-				message = "Info : Topic deleted successfully";
-			} else {
-				message = "Error : Failed to delete the topic";
-			}
+		if(userMBean.getSelectedTopic()!=null){
+			topicService.deleteTopic(userMBean.getSelectedTopic());
+			loadTopics();
 		}
 	}
 	
 	public void addTopic() {
 		boolean success = false;
-		if (newTopic != null && selectedCourse != null) {
-			newTopic.setCourseId(selectedCourse.getId());
+		if (newTopic != null && userMBean.getSelectedCourse() != null) {
+			newTopic.setCourseId(userMBean.getSelectedCourse().getId());
 			newTopic.setSortOrder(topicsMBean.getPaginator().getRecordsTotal() + 1);
 			newTopic.setCreatedTs(new Date());
 			newTopic.setLastModifiedTs(new Date());

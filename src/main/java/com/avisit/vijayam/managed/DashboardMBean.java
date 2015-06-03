@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import com.avisit.vijayam.model.Metric;
 
 @Component
 @ManagedBean(name = "dashboardMBean")
-@SessionScoped
+@RequestScoped
 public class DashboardMBean implements Serializable{
 	
 	private static final long serialVersionUID = 4671695153857560699L;

@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition template="/pages/templates/template2.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript">
+	 		function setNavCss(){
+         		document.getElementById("coursesLI").className = "active";
+         	}
+		</script>
+		
+		<div class="span10">
+			
+			<h:form id="breadCrumbsForm">
+        		<ul class="breadcrumb">
+					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
+						<li>
+							<h:outputText style="color : #0090FF" value="#{crumb}"/>
+							<span class="divider">/</span>
+						</li>
+					</ui:repeat>
+				</ul>
+        	</h:form>
+        	
+        </div>
+        
+		<div class="span10" id="viewContent">
+			<h:form id="editForm">
+				<table>
+					<tbody>
+						<tr>
+							<td>Question</td>
+							<td>
+								<h:panelGroup>
+									<h:inputTextarea id="editContent"
+										value="#{questionEditMBean.selQuestion.content}"
+										required="true"
+										validatorMessage="Length cannot exceed 1000 characters"
+										requiredMessage="Cannot be Empty" cols="100" rows="5">
+										<f:validateLength maximum="1000" minimum="1" />
+									</h:inputTextarea>
+									<h:message for="editContent" styleClass="alert alert-error" />
+								</h:panelGroup>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Question Type</td>
+							<td>
+								<h:selectOneMenu required="true"
+									value="#{questionEditMBean.selQuestion.type}">
+									<f:selectItem itemValue="1" itemLabel="Multiple Choice" />
+									<f:selectItem itemValue="2" itemLabel="Multiple Response" />
+									<f:selectItem itemValue="3" itemLabel="True/False" />
+									<f:selectItem itemValue="4" itemLabel="Fill in the Blank" />
+								</h:selectOneMenu>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Points</td>
+							<td>
+								<h:selectOneMenu id="points"
+									value="#{questionEditMBean.selQuestion.points}">
+									<f:selectItem itemLabel="1" itemValue="1" />
+									<f:selectItem itemLabel="2" itemValue="2" />
+									<f:selectItem itemLabel="3" itemValue="3" />
+									<f:selectItem itemLabel="4" itemValue="4" />
+									<f:selectItem itemLabel="5" itemValue="5" />
+									<f:selectItem itemLabel="6" itemValue="6" />
+									<f:selectItem itemLabel="7" itemValue="7" />
+									<f:selectItem itemLabel="8" itemValue="8" />
+									<f:selectItem itemLabel="9" itemValue="9" />
+									<f:selectItem itemLabel="10" itemValue="10" />
+								</h:selectOneMenu>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Options</td>
+							<td>
+								<h:selectOneRadio id="optionsRadio" required="true"
+									requiredMessage="Select an Option"
+									value="#{questionEditMBean.optionSelected}">
+									<f:converter converterId="optionConverter"/>
+									<f:selectItems value="#{questionEditMBean.selQuestion.optionsList}"
+										var="option" itemValue="#{option}" itemLabel="#{option.content}" />
+								</h:selectOneRadio>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Delete Options</td>
+							<td>
+								<h:dataTable id="optionsTable"
+									value="#{questionEditMBean.selQuestion.optionsList}" var="option">
+									<h:column>
+										<h:outputText id="option_content1" cols="50" rows="1"
+											value="#{option.content}"/>
+									</h:column>
+									<h:column>
+										<a4j:commandButton id="removeBtn"
+												action="#{questionEditController.removeOption}" immediate="true"
+												image="/resources/img/delete.gif" value="Remove Option"
+												render="optionsSection,optionsRadio" style="float:right;"
+												title="Remove">
+												<f:setPropertyActionListener
+													target="#{questionEditMBean.optionToRemove}"
+													value="#{option}" />
+											</a4j:commandButton>
+									</h:column>
+								</h:dataTable>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Add Option</td>
+							<td>
+								<h:panelGroup style="display:block;">
+									<h:inputText id="newOptionText"
+										value="#{questionEditMBean.newOptionText}" />
+									<h:commandLink class="btn btn-primary" id="addBtn" value="Add Option">
+										<f:ajax listener="#{questionEditController.addOption}" render="@all" execute="newOptionText" />
+									</h:commandLink>
+								</h:panelGroup>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2">
+								<h:commandLink class="btn btn-primary" id="submit" value="Update" action="#{questionEditController.updateQuestion}" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

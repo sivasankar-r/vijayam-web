@@ -88,7 +88,7 @@
             </ul>
             <ul class="nav navbar-form pull-right">
               <li class="dropdown navbar-form pull-right">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{contentProviderMBean.contentProvider.username}<b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{userMBean.contentProvider.username}<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="#">My Account</a></li>
                   <li><a href="#">Sign Out</a></li>
@@ -116,15 +116,15 @@
 					<li class="divider"></li>
 					<li class="nav-header">Content Management</li>
 					<li id="coursesLI"><h:commandLink value="Courses" action="#{courseController.loadCourses}"/></li>
-	              	<li id="examsLI"><h:commandLink value="Exams"/></li>
+	              	<!-- <li id="examsLI"><h:commandLink value="Exams"/></li> -->
 					<li class="divider"></li>
 					<li class="nav-header">User Management</li>
 					<li id="userManageLI"><h:commandLink value="Add / Update / Delete"/></li>
-					<li id="assignExamLI"><h:commandLink value="Assign Exam"/></li>
-					<li class="divider"></li>
+					<!-- <li id="assignExamLI"><h:commandLink value="Assign Exam"/></li> -->
+					<!-- <li class="divider"></li>
 					<li class="nav-header">Analysis</li>
 					<li id="userWiseAnalysisLI"><h:commandLink value="User-Wise"/></li>
-					<li id="examWiseAnalysisLI"><h:commandLink value="Exam-Wise"/></li>
+					<li id="examWiseAnalysisLI"><h:commandLink value="Exam-Wise"/></li> -->
 					<li class="divider"></li>
 	              	<li class="nav-header">Notifications</li>
 	              	<li id="notificationsLI"><h:outputLink value="http://ec2-52-25-72-42.us-west-2.compute.amazonaws.com:8001/">Broadcast Notifications</h:outputLink></li>

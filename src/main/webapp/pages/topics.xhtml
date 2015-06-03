@@ -25,14 +25,26 @@
 	 		    	$('#editTopicModal').modal('hide');
 	 		    }
 	 		}
+
+	 		function deleteTopicModalShow(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#deleteTopicModal').modal('show');
+	 		    }
+	 		}
+	 		
+	 		function deleteTopicModalClose(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#deleteTopicModal').modal('hide');
+	 		    }
+	 		}
 		</script>
 		
 		<div class="span10">
 			<h:form id="breadCrumbsForm">
         		<ul class="breadcrumb">
-					<ui:repeat id="breadCrumbList" value="#{topicController.breadCrumbs}" var="crumb">
+					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
 						<li>
-							<h:commandLink value="#{crumb}"></h:commandLink>
+							<h:outputText style="color : #0090FF" value="#{crumb}"/>
 							<span class="divider">/</span>
 						</li>
 					</ui:repeat>
@@ -88,7 +100,12 @@
 							var="topic" varStatus="index">
 							<tr>
 								<td>#{((index.index)+1)+((topicsMBean.paginator.recordsPerPage)*(topicsMBean.paginator.pageIndex-1))}</td>
-								<td>#{topic.name}</td>
+								<td><h:commandLink value="#{topic.name}"
+										action="#{questionController.loadQuestions}"
+										style="font-size: 14px;">
+										<f:setPropertyActionListener
+											target="#{userMBean.selectedTopic}" value="#{topic}" />
+									</h:commandLink></td>
 								<td>#{topic.description}</td>
 								<td><h:commandLink id="toggleFlagLink"
 										action="#{topicController.toggleEnableFlag}" rel="tooltip"
@@ -96,19 +113,20 @@
 										<i
 											class="icon-large #{topic.enabledFlag == true ? 'icon-ok-sign green' : 'icon-remove-sign red'}"></i>
 										<f:setPropertyActionListener
-											target="#{topicController.selectedTopic}" value="#{topic}" />
+											target="#{userMBean.selectedTopic}" value="#{topic}" />
 									</h:commandLink></td>
 								<td><h:commandLink id="editTopicLink" rel="tooltip"
 										title="Edit Topic">
 										<i class="icon-large icon-pencil black"></i>
-										<f:setPropertyActionListener target="#{topicController.selectedTopic}" value="#{topic}" />
+										<f:setPropertyActionListener target="#{userMBean.selectedTopic}" value="#{topic}" />
 										<f:ajax onevent="editTopicModalShow" />
 									</h:commandLink></td>
 								<td><h:commandLink id="deleteTopicLink"
-										action="#{topicController.deleteTopic}" rel="tooltip"
+										rel="tooltip"
 										title="Delete Topic">
 										<i class="icon-large icon-trash black"></i>
-										<f:setPropertyActionListener target="#{topicController.selectedTopic}" value="#{topic}" />
+										<f:setPropertyActionListener target="#{userMBean.selectedTopic}" value="#{topic}" />
+										<f:ajax onevent="deleteTopicModalShow" />
 									</h:commandLink></td>
 							</tr>
 						</ui:repeat>
@@ -130,7 +148,7 @@
 				<h:form id="editTopicModalForm">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h3 id="myModalLabel" class="alert">Edit Topic #{selectedTopic.name}</h3>
+						<h3 id="myModalLabel" class="alert">Edit Topic #{userMBean.selectedTopic.name}</h3>
 					</div>
 					<div style="padding: 10px;">
 						<h:message class="alert alert-error" for=":editTopicModalForm:editTopicName" />
@@ -141,13 +159,13 @@
 								<td>Topic Name</td>
 								<td><h:inputText id="editTopicName" style="width:200px;"
 										requiredMessage="Title is Mandatory" required="true"
-										value="#{topicController.selectedTopic.name}" /></td>
+										value="#{userMBean.selectedTopic.name}" /></td>
 							</tr>
 							<tr>
 								<td>Description</td>
 								<td><h:inputTextarea id="editTopicDesc"
 										style="width:200px;"
-										value="#{topicController.selectedTopic.description}" /></td>
+										value="#{userMBean.selectedTopic.description}" /></td>
 							</tr>
 						</table>
 					</div>
@@ -155,6 +173,25 @@
 						<button class="btn" data-dismiss="modal">Cancel</button>
 						<h:commandLink class="btn btn-primary" action="#{topicController.editTopic}"
 							value="Save changes">
+						</h:commandLink>
+					</div>
+				</h:form>
+			</div>
+			
+			<div id="deleteTopicModal" class="modal hide fade">
+				<h:form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 id="myModalLabel" class="alert">Delete Topic</h3>
+					</div>
+					<div class="modal-body">
+						This action will delete the topics and questions from the database.<br/>
+						Do you want to continue?
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal">Cancel</button>
+						<h:commandLink class="btn btn-primary" action="#{topicController.deleteTopic}" 
+							value="Delete">
 						</h:commandLink>
 					</div>
 				</h:form>

@@ -25,14 +25,26 @@
 	 		    	$('#editCourseModal').modal('hide');
 	 		    }
 	 		}
+
+	 		function deleteCourseModalShow(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#deleteCourseModal').modal('show');
+	 		    }
+	 		}
+	 		
+	 		function deleteCourseModalClose(data) {
+	 		    if (data.status === 'success') {
+	 		    	$('#deleteCourseModal').modal('hide');
+	 		    }
+	 		}
 		</script>
 		
 		<div class="span10">
         	<h:form id="breadCrumbsForm">
         		<ul class="breadcrumb">
-					<ui:repeat id="breadCrumbList" value="#{courseController.breadCrumbs}" var="crumb">
+					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
 						<li>
-							<h:commandLink value="#{crumb}"></h:commandLink>
+							<h:outputText style="color : #0090FF" value="#{crumb}"/>
 							<span class="divider">/</span>
 						</li>
 					</ui:repeat>
@@ -93,7 +105,7 @@
 										action="#{topicController.loadTopics}"
 										style="font-size: 14px;">
 										<f:setPropertyActionListener
-											target="#{topicController.selectedCourse}" value="#{course}" />
+											target="#{userMBean.selectedCourse}" value="#{course}" />
 									</h:commandLink></td>
 								<td>#{course.description}</td>
 								<td>#{course.topicCount}</td>
@@ -103,19 +115,20 @@
 										<i
 											class="icon-large #{course.enabledFlag == true ? 'icon-ok-sign green' : 'icon-remove-sign red'}"></i>
 										<f:setPropertyActionListener
-											target="#{courseController.selectedCourse}" value="#{course}" />
+											target="#{userMBean.selectedCourse}" value="#{course}" />
 									</h:commandLink></td>
 								<td><h:commandLink id="editCourseLink" rel="tooltip"
 										title="Edit Course">
 										<i class="icon-large icon-pencil black"></i>
-										<f:setPropertyActionListener target="#{courseController.selectedCourse}" value="#{course}" />
+										<f:setPropertyActionListener target="#{userMBean.selectedCourse}" value="#{course}" />
 										<f:ajax onevent="editCourseModalShow" />
 									</h:commandLink></td>
 								<td><h:commandLink id="deleteCourseLink"
-										action="#{courseController.deleteCourse}" rel="tooltip"
+										rel="tooltip"
 										title="Delete Course">
 										<i class="icon-large icon-trash black"></i>
-										<f:setPropertyActionListener target="#{courseController.selectedCourse}" value="#{course}" />
+										<f:setPropertyActionListener target="#{userMBean.selectedCourse}" value="#{course}" />
+										<f:ajax onevent="deleteCourseModalShow" />
 									</h:commandLink></td>
 							</tr>
 						</ui:repeat>
@@ -145,13 +158,13 @@
 								<td>Course Name</td>
 								<td><h:inputText id="editCourseName" style="width:200px;"
 										requiredMessage="Title is Mandatory" required="true"
-										value="#{courseController.selectedCourse.name}" /></td>
+										value="#{userMBean.selectedCourse.name}" /></td>
 							</tr>
 							<tr>
 								<td>Description</td>
 								<td><h:inputTextarea id="editCourseDesc"
 										style="width:200px;"
-										value="#{courseController.selectedCourse.description}" /></td>
+										value="#{userMBean.selectedCourse.description}" /></td>
 							</tr>
 						</table>
 					</div>
@@ -159,6 +172,25 @@
 						<button class="btn" data-dismiss="modal">Cancel</button>
 						<h:commandLink class="btn btn-primary" action="#{courseController.editCourse}"
 							value="Save changes">
+						</h:commandLink>
+					</div>
+				</h:form>
+			</div>
+			
+			<div id="deleteCourseModal" class="modal hide fade">
+				<h:form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 id="myModalLabel" class="alert">Delete Course</h3>
+					</div>
+					<div class="modal-body">
+						This action will delete the course and its corresponding topics, questions from the database.<br/>
+						Do you want to continue?
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal">Cancel</button>
+						<h:commandLink class="btn btn-primary" action="#{courseController.deleteCourse}" 
+							value="Delete">
 						</h:commandLink>
 					</div>
 				</h:form>

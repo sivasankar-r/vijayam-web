@@ -11,6 +11,7 @@ public class Question {
 	private int points = 1;
 	private int difficulty = 3;
 	private int sortOrder;
+	private int topicId;
 	private List<Option> optionsList = new ArrayList<Option>();
 	
 	public Question(){
@@ -71,6 +72,14 @@ public class Question {
 
 	public int getSortOrder() {
 		return sortOrder;
+	}
+
+	public int getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(int topicId) {
+		this.topicId = topicId;
 	}
 
 	public List<Option> getOptionsList() {

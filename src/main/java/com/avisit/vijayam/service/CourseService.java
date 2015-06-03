@@ -50,7 +50,7 @@ public class CourseService {
 		return courseDao.editCourse(course) == 1;
 	}
 
-	public boolean deleteCourse(Course course) {
-		return courseDao.deleteCourse(course) == 1;
+	public int deleteCourse(Course course) {
+		return courseDao.deleteCourse(course);
 	}
 }

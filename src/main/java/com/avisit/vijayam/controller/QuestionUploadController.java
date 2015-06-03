@@ -1,0 +1,76 @@
+package com.avisit.vijayam.controller;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.servlet.http.Part;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.avisit.vijayam.common.Constant;
+import com.avisit.vijayam.managed.UserMBean;
+import com.avisit.vijayam.service.FileUploadService;
+
+@Component
+@ManagedBean(name = "questionUploadController")
+@RequestScoped
+public class QuestionUploadController {
+	@Autowired
+	private FileUploadService fileUploadService;
+	@Autowired
+	private UserMBean userMBean;
+	@Autowired
+	private QuestionController questionController;
+
+	private Part filePart;
+
+	public void setFileUploadService(FileUploadService fileUploadService) {
+		this.fileUploadService = fileUploadService;
+	}
+
+	public FileUploadService getFileUploadService() {
+		return fileUploadService;
+	}
+
+	public UserMBean getUserMBean() {
+		return userMBean;
+	}
+
+	public void setUserMBean(UserMBean userMBean) {
+		this.userMBean = userMBean;
+	}
+
+	public Part getFilePart() {
+		return filePart;
+	}
+
+	public void setFilePart(Part filePart) {
+		this.filePart = filePart;
+	}
+
+	public String upload() {
+		String toPage = "questionUpload";
+		try {
+			fileUploadService.uploadFile(filePart.getInputStream(), userMBean.getSelectedTopic());
+			toPage = questionController.loadQuestions();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+		}
+		return toPage;
+	}
+
+	public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
+		Part file = (Part) value;
+		if(file!=null){
+			if (!Constant.EXCEL_CONTENTTYPE.equals(file.getContentType())) {
+				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Uploaded file is not an .xls file. Download the template to upload the questions", null));
+			}	
+		} else {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please choose a file to upload", null));
+		}
+	}
+}

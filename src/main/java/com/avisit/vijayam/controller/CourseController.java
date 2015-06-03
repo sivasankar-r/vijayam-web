@@ -1,8 +1,6 @@
 package com.avisit.vijayam.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -11,9 +9,9 @@ import javax.faces.bean.RequestScoped;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.managed.CoursesMBean;
 import com.avisit.vijayam.managed.RepeatPaginator;
+import com.avisit.vijayam.managed.UserMBean;
 import com.avisit.vijayam.model.Course;
 import com.avisit.vijayam.service.CourseService;
 
@@ -21,30 +19,19 @@ import com.avisit.vijayam.service.CourseService;
 @ManagedBean
 @RequestScoped
 public class CourseController {
-	private Course selectedCourse;
 	private Course newCourse;
 	private String message;
-	private List<String> breadCrumbs;
 	@Autowired
 	private CourseService courseService;
 	@Autowired
-	private ContentProviderMBean contentProviderMBean;
+	private UserMBean userMBean;
 	@Autowired
 	private CoursesMBean coursesMBean;
 
 	@PostConstruct
 	public void init() {
 		newCourse = new Course();
-		breadCrumbs = new ArrayList<String>();
-		breadCrumbs.add("All Courses");
-	}
-
-	public Course getSelectedCourse() {
-		return selectedCourse;
-	}
-
-	public void setSelectedCourse(Course selectedCourse) {
-		this.selectedCourse = selectedCourse;
+		userMBean.getBreadCrumbs().add("All Courses");
 	}
 
 	public Course getNewCourse() {
@@ -71,12 +58,12 @@ public class CourseController {
 		this.courseService = courseService;
 	}
 
-	public ContentProviderMBean getContentProviderMBean() {
-		return contentProviderMBean;
+	public UserMBean getUserMBean() {
+		return userMBean;
 	}
 
-	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
-		this.contentProviderMBean = contentProviderMBean;
+	public void setUserMBean(UserMBean userMBean) {
+		this.userMBean = userMBean;
 	}
 
 	public CoursesMBean getCoursesMBean() {
@@ -89,16 +76,19 @@ public class CourseController {
 
 	public String loadCourses() {
 		message = null;
-		selectedCourse = null;
-		
-		coursesMBean.setPaginator(new RepeatPaginator<Course>(courseService.fetchCourseByProvider(contentProviderMBean.getContentProvider().getContentProviderId())));
+		userMBean.setSelectedCourse(new Course());
+		int size = userMBean.getBreadCrumbs().size();
+		for(int i = size-1; i > 0; i--){
+			userMBean.getBreadCrumbs().remove(i);	
+		}
+		coursesMBean.setPaginator(new RepeatPaginator<Course>(courseService.fetchCourseByProvider(userMBean.getContentProvider().getContentProviderId())));
 		return "courses";
 	}
 
 	public void addCourse() {
 		boolean success = false;
 		if (newCourse != null) {
-			newCourse.setContentProviderId(contentProviderMBean.getContentProvider().getContentProviderId());
+			newCourse.setContentProviderId(userMBean.getContentProvider().getContentProviderId());
 			newCourse.setSortOrder(coursesMBean.getPaginator().getRecordsTotal() + 1);
 			newCourse.setCreatedTs(new Date());
 			newCourse.setLastModifiedTs(new Date());
@@ -113,9 +103,9 @@ public class CourseController {
 	}
 	
 	public void toggleEnableFlag() {
-		if(selectedCourse!=null){
-			if(courseService.toggleEnableFlag(selectedCourse)){
-				message = selectedCourse.isEnabledFlag() ? "Info : Course disabled" : "Info : Course enabled" ;
+		if(userMBean.getSelectedCourse()!=null){
+			if(courseService.toggleEnableFlag(userMBean.getSelectedCourse())){
+				message = userMBean.getSelectedCourse().isEnabledFlag() ? "Info : Course disabled" : "Info : Course enabled" ;
 				loadCourses();
 			} else {
 				message = "Error : Failed to toggle the course enable / disable";
@@ -124,8 +114,8 @@ public class CourseController {
 	}
 	
 	public void editCourse() {
-		if(selectedCourse!=null){
-			if(courseService.editCourse(selectedCourse)){
+		if(userMBean.getSelectedCourse()!=null){
+			if(courseService.editCourse(userMBean.getSelectedCourse())){
 				loadCourses();
 				message = "Info : Course updated successfully";
 			} else {
@@ -135,21 +125,9 @@ public class CourseController {
 	}
 	
 	public void deleteCourse() {
-		if(selectedCourse!=null){
-			if(courseService.deleteCourse(selectedCourse)){
-				loadCourses();
-				message = "Info : Course deleted successfully";
-			} else {
-				message = "Error : Failed to delete the course";
-			}
+		if(userMBean.getSelectedCourse()!=null){
+			courseService.deleteCourse(userMBean.getSelectedCourse());
+			loadCourses();
 		}
-	}
-
-	public List<String> getBreadCrumbs() {
-		return breadCrumbs;
-	}
-
-	public void setBreadCrumbs(List<String> breadCrumbs) {
-		this.breadCrumbs = breadCrumbs;
 	}
 }

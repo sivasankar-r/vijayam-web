@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/pages/templates/template2.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript">
+	 		function setNavCss(){
+         		document.getElementById("coursesLI").className = "active";
+         	}
+		</script>
+		
+		<div class="span10">
+			
+			<h:form id="breadCrumbsForm">
+        		<ul class="breadcrumb">
+					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
+						<li>
+							<h:outputText style="color : #0090FF" value="#{crumb}"/>
+							<span class="divider">/</span>
+						</li>
+					</ui:repeat>
+				</ul>
+  				<div style = "float:right; padding-bottom: 5px; ">
+  					<h:commandLink class="btn btn-primary" id="uploadQuestionLink" value="Upload Questions" action="questionUpload"/>
+  				</div>
+        	</h:form>
+        	
+        </div>
+        
+		<div class="span10" id="viewContent">
+			<h:form id="questionsForm">
+				<table id="questionsTable" class="table table-bordered table-hover">
+					<tr>
+						<th>S.No</th>
+						<th>Question</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+					<tbody>
+						<ui:repeat id="questionList" value="#{questionsMBean.questionList}"
+							var="question" varStatus="index">
+							<tr>
+								<td>#{((index.index)+1)}</td>
+								<td>
+									<h:outputText value="#{question.content}"/><br/><br/>
+									<table>
+										<tr>
+											<ui:repeat var="option" value="#{question.optionsList}">
+												<td style="border:none;  padding-right:5em; color:#{option.correct == true ? 'green' : 'red'}">
+													<h:outputText value="#{option.content}"/>
+												</td>
+											</ui:repeat>
+										</tr>
+									</table>
+								</td>
+								<td><h:commandLink id="editQuestionLink" rel="tooltip" action="#{questionEditController.loadEditQuestion}"
+										title="Edit Question">
+										<i class="icon-large icon-pencil black"></i>
+										<f:setPropertyActionListener target="#{questionEditMBean.selQuestion}" value="#{question}" />
+									</h:commandLink></td>
+								<td><h:commandLink id="deleteQuestionLink"
+										action="#{questionController.deleteQuestion}" rel="tooltip"
+										title="Delete Question">
+										<i class="icon-large icon-trash black"></i>
+										<f:setPropertyActionListener target="#{userMBean.selectedQuestion}" value="#{question}" />
+									</h:commandLink></td>
+							</tr>
+						</ui:repeat>
+					</tbody>
+				</table>
+			</h:form>
+		</div>	
+	</ui:define>
+</ui:composition>
+</html>

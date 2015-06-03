@@ -37,8 +37,8 @@ public class TopicService {
 		return topicDao.editTopic(topic) == 1;
 	}
 
-	public boolean deleteTopic(Topic topic) {
-		return topicDao.deleteTopic(topic) == 1;
+	public int deleteTopic(Topic topic) {
+		return topicDao.deleteTopic(topic);
 	}
 
 	public boolean addNew(Topic topic) {
