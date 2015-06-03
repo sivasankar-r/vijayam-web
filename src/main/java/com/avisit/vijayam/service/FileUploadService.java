@@ -3,7 +3,6 @@ package com.avisit.vijayam.service;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -15,7 +14,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,7 +162,7 @@ public class FileUploadService implements Serializable{
 		return style;
 	}
 	
-	private boolean validateVerticalHeaderTemplate(HSSFWorkbook workbook, HSSFSheet sheet, List<String> headerList) throws Exception{
+	/*private boolean validateVerticalHeaderTemplate(HSSFWorkbook workbook, HSSFSheet sheet, List<String> headerList) throws Exception{
 		boolean validateTemplate = true;
 		try {
 			Iterator<Row> rows = sheet.rowIterator();
@@ -179,7 +177,7 @@ public class FileUploadService implements Serializable{
 			throw new Exception("Invalid Exam Sheet. Please download the template", e);
 		}
 		return validateTemplate;
-	}
+	}*/
 	
 	private String readCell(HSSFRow rowData, int cellIndex) {
 		return rowData.getCell(cellIndex) != null ? rowData.getCell(cellIndex).toString().trim() : null;

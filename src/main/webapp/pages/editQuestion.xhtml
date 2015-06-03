@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:a4j="http://richfaces.org/a4j">
+	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/pages/templates/template2.xhtml">
 	<ui:define name="content">
@@ -101,19 +100,14 @@
 								<h:dataTable id="optionsTable"
 									value="#{questionEditMBean.selQuestion.optionsList}" var="option">
 									<h:column>
-										<h:outputText id="option_content1" cols="50" rows="1"
-											value="#{option.content}"/>
+										<h:outputText id="option_content1" value="#{option.content}"/>
 									</h:column>
 									<h:column>
-										<a4j:commandButton id="removeBtn"
-												action="#{questionEditController.removeOption}" immediate="true"
-												image="/resources/img/delete.gif" value="Remove Option"
-												render="optionsSection,optionsRadio" style="float:right;"
-												title="Remove">
-												<f:setPropertyActionListener
-													target="#{questionEditMBean.optionToRemove}"
-													value="#{option}" />
-											</a4j:commandButton>
+										<h:commandLink id="addBtn" rel="tooltip" title="Delete Option" action="#{questionEditController.removeOption}">
+											<i class="icon-large icon-trash black"></i>
+											<f:setPropertyActionListener target="#{questionEditMBean.optionToRemove}" value="#{option}" />
+											<f:ajax render="@all" />
+										</h:commandLink>
 									</h:column>
 								</h:dataTable>
 							</td>
