@@ -4,9 +4,9 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.RepeatPaginator;
@@ -17,7 +17,7 @@ import com.avisit.vijayam.service.TopicService;
 
 @Component
 @ManagedBean
-@RequestScoped
+@Scope(value="request")
 public class TopicController {
 	@Autowired
 	private UserMBean userMBean;
@@ -103,9 +103,9 @@ public class TopicController {
 		if(userMBean.getSelectedTopic()!=null){
 			if(topicService.editTopic(userMBean.getSelectedTopic())){
 				loadTopics();
-				message = "Info : Course updated successfully";
+				message = "Info : Topic updated successfully";
 			} else {
-				message = "Error : Failed to update the course";
+				message = "Error : Failed to update the Topic";
 			}
 		}
 	}
@@ -128,9 +128,9 @@ public class TopicController {
 		}
 		if (success) {
 			loadTopics();
-			setMessage("Info : New course added Successfully");
+			setMessage("Info : New topic added Successfully");
 		} else {
-			setMessage("Error : Failed to add new course");
+			setMessage("Error : Failed to add new topic");
 		}
 	}
 	

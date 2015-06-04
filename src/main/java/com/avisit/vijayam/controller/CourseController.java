@@ -4,9 +4,9 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.CoursesMBean;
@@ -16,8 +16,8 @@ import com.avisit.vijayam.model.Course;
 import com.avisit.vijayam.service.CourseService;
 
 @Component
-@ManagedBean
-@RequestScoped
+@ManagedBean(name="courseController")
+@Scope(value="request")
 public class CourseController {
 	private Course newCourse;
 	private String message;

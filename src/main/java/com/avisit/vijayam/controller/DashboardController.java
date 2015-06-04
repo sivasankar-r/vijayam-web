@@ -1,18 +1,18 @@
 package com.avisit.vijayam.controller;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.avisit.vijayam.managed.UserMBean;
 import com.avisit.vijayam.managed.DashboardMBean;
+import com.avisit.vijayam.managed.UserMBean;
 import com.avisit.vijayam.service.DashboardService;
 
 @Component
 @ManagedBean
-@RequestScoped
+@Scope(value="request")
 public class DashboardController {
 	@Autowired
 	private DashboardService dashboardService;

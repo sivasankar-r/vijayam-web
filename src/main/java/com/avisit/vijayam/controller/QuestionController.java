@@ -2,9 +2,9 @@ package com.avisit.vijayam.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.QuestionsMBean;
@@ -13,7 +13,7 @@ import com.avisit.vijayam.service.QuestionService;
 
 @Component
 @ManagedBean(name = "questionController")
-@RequestScoped
+@Scope(value="request")
 public class QuestionController {
 	@Autowired
 	private UserMBean userMBean;

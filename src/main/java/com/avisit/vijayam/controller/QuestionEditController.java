@@ -1,10 +1,10 @@
 package com.avisit.vijayam.controller;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.QuestionEditMBean;
@@ -13,7 +13,7 @@ import com.avisit.vijayam.service.QuestionService;
 
 @Component
 @ManagedBean(name="questionEditController")
-@RequestScoped
+@Scope(value="request")
 public class QuestionEditController {
 
 	@Autowired

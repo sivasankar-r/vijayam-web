@@ -72,39 +72,40 @@
 
 <f:view>
 	<h:body onload="setNavCss();">
-	<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Vijayam</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-form pull-right">
-              <li class="dropdown navbar-form pull-right">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{userMBean.contentProvider.username}<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">My Account</a></li>
-                  <li><a href="#">Sign Out</a></li>
-                  <li class="divider"></li>
-                  <li class="nav-header">Help</li>
-                  <li><a href="#">Report Issue</a></li>
-                  <li><a href="#">Feedback</a></li>
-                  <li><a href="#">Help Center</a></li>
-                </ul>
-              </li>
-              </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    
+	<h:form id="topNavListForm">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+	          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="brand" href="#">Vijayam</a>
+	          <div class="nav-collapse collapse">
+	            <ul class="nav">
+	              <li><a href="#about">About</a></li>
+	              <li><a href="#contact">Contact</a></li>
+	            </ul>
+	            <ul class="nav navbar-form pull-right">
+	              <li class="dropdown navbar-form pull-right">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{userMBean.contentProvider.name}<b class="caret"></b></a>
+	                <ul class="dropdown-menu">
+	                  <li><a href="#">My Account</a></li>
+	                  <li><h:commandLink value="Sign out" action="#{loginController.logout}"/></li>
+	                  <li class="divider"></li>
+	                  <li class="nav-header">Help</li>
+	                  <li><a href="#">Report Issue</a></li>
+	                  <li><a href="#">Feedback</a></li>
+	                  <li><a href="#">Help Center</a></li>
+	                </ul>
+	              </li>
+	              </ul>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+    </h:form>
     
     <div class="container-fluid">
       <div class="row-fluid">

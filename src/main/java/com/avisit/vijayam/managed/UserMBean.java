@@ -6,8 +6,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.model.ContentProvider;
@@ -17,7 +18,7 @@ import com.avisit.vijayam.model.Topic;
 
 @Component
 @ManagedBean(name="userMBean")
-@SessionScoped
+@Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 public class UserMBean implements Serializable{
 
 	private static final long serialVersionUID = -1670860734020604646L;

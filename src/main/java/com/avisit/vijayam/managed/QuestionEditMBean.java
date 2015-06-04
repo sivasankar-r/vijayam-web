@@ -3,7 +3,6 @@ package com.avisit.vijayam.managed;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,6 @@ import com.avisit.vijayam.model.Question;
 
 @Component
 @ManagedBean(name = "questionEditMBean")
-@RequestScoped
 public class QuestionEditMBean implements Serializable{
 
 	private static final long serialVersionUID = 7233033751687697794L;

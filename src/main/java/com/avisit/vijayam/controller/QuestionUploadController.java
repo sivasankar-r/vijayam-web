@@ -2,13 +2,13 @@ package com.avisit.vijayam.controller;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.common.Constant;
@@ -17,7 +17,7 @@ import com.avisit.vijayam.service.FileUploadService;
 
 @Component
 @ManagedBean(name = "questionUploadController")
-@RequestScoped
+@Scope(value="request")
 public class QuestionUploadController {
 	@Autowired
 	private FileUploadService fileUploadService;

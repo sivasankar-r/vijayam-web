@@ -1,11 +1,12 @@
 package com.avisit.vijayam.controller;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.UserMBean;
@@ -14,7 +15,7 @@ import com.avisit.vijayam.service.LoginService;
 
 @Component
 @ManagedBean
-@RequestScoped
+@Scope(value="request")
 public class LoginController {
 	Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
@@ -57,7 +58,9 @@ public class LoginController {
 		ContentProvider contentProvider = null;
 		try {
 			contentProvider = loginService.isValidUser(userMBean.getContentProvider().getUsername(), userMBean.getContentProvider().getPassword());
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", userMBean.getContentProvider().getUsername());
 			logger.info("Login Successful... Username : " + userMBean.getContentProvider().getUsername());
+			setLoginMessage(null);
 		} catch (Exception e) {
 			setLoginMessage(e.getMessage());
 			logger.error(e.getMessage(), e);
@@ -69,5 +72,11 @@ public class LoginController {
 			toPage = dashboardController.loadDashboard();
 		}		
 		return toPage;
+	}
+	
+	public String logout() {
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		setLoginMessage("Signed out successfully");
+		return "login";
 	}
 }
