@@ -18,7 +18,7 @@
 			
 			<h:form id="breadCrumbsForm">
         		<ul class="breadcrumb">
-					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
+					<ui:repeat id="breadCrumbList" value="#{contentProviderMBean.breadCrumbs}" var="crumb">
 						<li>
 							<h:outputText style="color : #0090FF" value="#{crumb}"/>
 							<span class="divider">/</span>

@@ -89,7 +89,7 @@
 	            </ul>
 	            <ul class="nav navbar-form pull-right">
 	              <li class="dropdown navbar-form pull-right">
-	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{userMBean.contentProvider.name}<b class="caret"></b></a>
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{contentProviderMBean.contentProvider.name}<b class="caret"></b></a>
 	                <ul class="dropdown-menu">
 	                  <li><a href="#">My Account</a></li>
 	                  <li><h:commandLink value="Sign out" action="#{loginController.logout}"/></li>
@@ -120,7 +120,7 @@
 	              	<!-- <li id="examsLI"><h:commandLink value="Exams"/></li> -->
 					<li class="divider"></li>
 					<li class="nav-header">User Management</li>
-					<li id="userManageLI"><h:commandLink value="Add / Update / Delete"/></li>
+					<li id="userManageLI"><h:commandLink value="Add / Update / Delete" action="#{userController.loadUsers}"/></li>
 					<!-- <li id="assignExamLI"><h:commandLink value="Assign Exam"/></li> -->
 					<!-- <li class="divider"></li>
 					<li class="nav-header">Analysis</li>

@@ -18,15 +18,11 @@ public class CourseService {
 	private TopicDao topicDao; 
 	
 	public List<Course> fetchAllCourses() {
-		List<Course> courseList = null;
-		courseList = courseDao.getAllCourses();
-		return courseList;
+		return courseDao.getAllCourses();
 	}
 	
 	public List<Course> fetchCourseTreeByProvider(String contentProviderId){
-		List<Course> courseList = null;
-		courseList = courseDao.getCourseTreeByProvider(contentProviderId);
-		return courseList;
+		return courseDao.getCourseTreeByProvider(contentProviderId);
 	}
 
 	public List<Course> fetchCourseByProvider(String contentProviderId) {

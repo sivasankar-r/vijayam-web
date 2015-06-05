@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.common.Constant;
-import com.avisit.vijayam.managed.UserMBean;
+import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.service.FileUploadService;
 
 @Component
@@ -22,7 +22,7 @@ public class QuestionUploadController {
 	@Autowired
 	private FileUploadService fileUploadService;
 	@Autowired
-	private UserMBean userMBean;
+	private ContentProviderMBean contentProviderMBean;
 	@Autowired
 	private QuestionController questionController;
 
@@ -36,12 +36,12 @@ public class QuestionUploadController {
 		return fileUploadService;
 	}
 
-	public UserMBean getUserMBean() {
-		return userMBean;
+	public ContentProviderMBean getContentProviderMBean() {
+		return contentProviderMBean;
 	}
 
-	public void setUserMBean(UserMBean userMBean) {
-		this.userMBean = userMBean;
+	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
+		this.contentProviderMBean = contentProviderMBean;
 	}
 
 	public Part getFilePart() {
@@ -55,7 +55,7 @@ public class QuestionUploadController {
 	public String upload() {
 		String toPage = "questionUpload";
 		try {
-			fileUploadService.uploadFile(filePart.getInputStream(), userMBean.getSelectedTopic());
+			fileUploadService.uploadFile(filePart.getInputStream(), contentProviderMBean.getSelectedTopic());
 			toPage = questionController.loadQuestions();
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));

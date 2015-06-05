@@ -20,9 +20,9 @@
 			        <h2 class="form-signin-heading">Welcome to Vijayam</h2>
 			        <h:panelGrid id="panel" columns="2" border="0" cellpadding="5" cellspacing="10">
 			        	<h:outputText value="User Name "/>
-						<h:inputText value="#{userMBean.contentProvider.username}"/>
+						<h:inputText value="#{contentProviderMBean.contentProvider.username}"/>
 						<h:outputText value="Password " />
-						<h:inputSecret value="#{userMBean.contentProvider.password}"/>
+						<h:inputSecret value="#{contentProviderMBean.contentProvider.password}"/>
 						<h:outputText />
 						<h:commandLink class="btn btn-primary" action="#{loginController.login}"
 							value="Sign in">

@@ -14,8 +14,10 @@
          		document.getElementById("coursesLI").className = "active";
          	}
 	 		
-	 		function editTopicModalShow(data) {
+	 		function editTopicModalShow(data, name, description) {
 	 		    if (data.status === 'success') {
+	 		    	$('#editTopicModalForm\\:editTopicName').val(name);
+	 		    	$('#editTopicModalForm\\:editTopicDesc').val(description);
 	 		    	$('#editTopicModal').modal('show');
 	 		    }
 	 		}
@@ -42,7 +44,7 @@
 		<div class="span10">
 			<h:form id="breadCrumbsForm">
         		<ul class="breadcrumb">
-					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
+					<ui:repeat id="breadCrumbList" value="#{contentProviderMBean.breadCrumbs}" var="crumb">
 						<li>
 							<h:outputText style="color : #0090FF" value="#{crumb}"/>
 							<span class="divider">/</span>
@@ -104,7 +106,7 @@
 										action="#{questionController.loadQuestions}"
 										style="font-size: 14px;">
 										<f:setPropertyActionListener
-											target="#{userMBean.selectedTopic}" value="#{topic}" />
+											target="#{contentProviderMBean.selectedTopic}" value="#{topic}" />
 									</h:commandLink></td>
 								<td>#{topic.description}</td>
 								<td><h:commandLink id="toggleFlagLink"
@@ -113,19 +115,21 @@
 										<i
 											class="icon-large #{topic.enabledFlag == true ? 'icon-ok-sign green' : 'icon-remove-sign red'}"></i>
 										<f:setPropertyActionListener
-											target="#{userMBean.selectedTopic}" value="#{topic}" />
+											target="#{contentProviderMBean.selectedTopic}" value="#{topic}" />
 									</h:commandLink></td>
 								<td><h:commandLink id="editTopicLink" rel="tooltip"
 										title="Edit Topic">
 										<i class="icon-large icon-pencil black"></i>
-										<f:setPropertyActionListener target="#{userMBean.selectedTopic}" value="#{topic}" />
-										<f:ajax onevent="editTopicModalShow" />
+										<f:setPropertyActionListener target="#{contentProviderMBean.selectedTopic}" value="#{topic}" />
+										<f:ajax onevent="function(data){
+															editTopicModalShow(data, '#{topic.name}', '#{topic.description}')
+															}" />
 									</h:commandLink></td>
 								<td><h:commandLink id="deleteTopicLink"
 										rel="tooltip"
 										title="Delete Topic">
 										<i class="icon-large icon-trash black"></i>
-										<f:setPropertyActionListener target="#{userMBean.selectedTopic}" value="#{topic}" />
+										<f:setPropertyActionListener target="#{contentProviderMBean.selectedTopic}" value="#{topic}" />
 										<f:ajax onevent="deleteTopicModalShow" />
 									</h:commandLink></td>
 							</tr>
@@ -148,7 +152,7 @@
 				<h:form id="editTopicModalForm">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h3 id="myModalLabel" class="alert">Edit Topic #{userMBean.selectedTopic.name}</h3>
+						<h3 id="myModalLabel" class="alert">Edit Topic</h3>
 					</div>
 					<div style="padding: 10px;">
 						<h:message class="alert alert-error" for=":editTopicModalForm:editTopicName" />
@@ -159,13 +163,13 @@
 								<td>Topic Name</td>
 								<td><h:inputText id="editTopicName" style="width:200px;"
 										requiredMessage="Title is Mandatory" required="true"
-										value="#{userMBean.selectedTopic.name}" /></td>
+										value="#{contentProviderMBean.selectedTopic.name}" /></td>
 							</tr>
 							<tr>
 								<td>Description</td>
 								<td><h:inputTextarea id="editTopicDesc"
 										style="width:200px;"
-										value="#{userMBean.selectedTopic.description}" /></td>
+										value="#{contentProviderMBean.selectedTopic.description}" /></td>
 							</tr>
 						</table>
 					</div>

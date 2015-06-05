@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.DashboardMBean;
-import com.avisit.vijayam.managed.UserMBean;
+import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.service.DashboardService;
 
 @Component
@@ -21,7 +21,7 @@ public class DashboardController {
 	private DashboardMBean dashboardMBean;
 	
 	@Autowired
-	private UserMBean userMBean;
+	private ContentProviderMBean contentProviderMBean;
 	
 	public void setDashboardService(DashboardService dashboardService) {
 		this.dashboardService = dashboardService;
@@ -39,16 +39,16 @@ public class DashboardController {
 		return dashboardMBean;
 	}
 
-	public void setUserMBean(UserMBean userMBean) {
-		this.userMBean = userMBean;
+	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
+		this.contentProviderMBean = contentProviderMBean;
 	}
 
-	public UserMBean getUserMBean() {
-		return userMBean;
+	public ContentProviderMBean getContentProviderMBean() {
+		return contentProviderMBean;
 	}
 	
 	public String loadDashboard() throws Exception{
-		dashboardMBean.setMetricList(dashboardService.getDashboardMetrics(userMBean.getContentProvider().getContentProviderId()));
+		dashboardMBean.setMetricList(dashboardService.getDashboardMetrics(contentProviderMBean.getContentProvider().getContentProviderId()));
 		return "dashboard";
 	}
 

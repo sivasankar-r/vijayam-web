@@ -15,17 +15,19 @@ import com.avisit.vijayam.model.ContentProvider;
 import com.avisit.vijayam.model.Course;
 import com.avisit.vijayam.model.Question;
 import com.avisit.vijayam.model.Topic;
+import com.avisit.vijayam.model.User;
 
 @Component
-@ManagedBean(name="userMBean")
+@ManagedBean(name="contentProviderMBean")
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
-public class UserMBean implements Serializable{
+public class ContentProviderMBean implements Serializable{
 
 	private static final long serialVersionUID = -1670860734020604646L;
 	private ContentProvider contentProvider;
 	private Course selectedCourse;
 	private Topic selectedTopic;
 	private Question selectedQuestion;
+	private User selectedUser;
 	private List<String> breadCrumbs;
 	
 	@PostConstruct
@@ -68,6 +70,14 @@ public class UserMBean implements Serializable{
 
 	public void setSelectedQuestion(Question selectedQuestion) {
 		this.selectedQuestion = selectedQuestion;
+	}
+
+	public User getSelectedUser() {
+		return selectedUser;
+	}
+
+	public void setSelectedUser(User selectedUser) {
+		this.selectedUser = selectedUser;
 	}
 
 	public List<String> getBreadCrumbs() {

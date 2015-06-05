@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.RepeatPaginator;
 import com.avisit.vijayam.managed.TopicsMBean;
-import com.avisit.vijayam.managed.UserMBean;
+import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.model.Topic;
 import com.avisit.vijayam.service.TopicService;
 
@@ -20,7 +20,7 @@ import com.avisit.vijayam.service.TopicService;
 @Scope(value="request")
 public class TopicController {
 	@Autowired
-	private UserMBean userMBean;
+	private ContentProviderMBean contentProviderMBean;
 	@Autowired
 	private TopicService topicService;
 	@Autowired
@@ -33,12 +33,12 @@ public class TopicController {
 		newTopic = new Topic();
 	}
 	
-	public UserMBean getUserMBean() {
-		return userMBean;
+	public ContentProviderMBean getContentProviderMBean() {
+		return contentProviderMBean;
 	}
 
-	public void setUserMBean(UserMBean userMBean) {
-		this.userMBean = userMBean;
+	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
+		this.contentProviderMBean = contentProviderMBean;
 	}
 
 	public TopicService getTopicService() {
@@ -76,22 +76,22 @@ public class TopicController {
 	public String loadTopics() {
 		message = null;
 		String toPage = "courses";
-		int size = userMBean.getBreadCrumbs().size();
+		int size = contentProviderMBean.getBreadCrumbs().size();
 		for(int i = size-1; i >= 1; i--){
-			userMBean.getBreadCrumbs().remove(i);	
+			contentProviderMBean.getBreadCrumbs().remove(i);	
 		}
-		if(userMBean.getSelectedCourse()!=null){
-			topicsMBean.setPaginator(new RepeatPaginator<Topic>(topicService.fetchTopicsByCourseId(userMBean.getSelectedCourse().getId())));
-			userMBean.getBreadCrumbs().add(userMBean.getSelectedCourse().getName());
+		if(contentProviderMBean.getSelectedCourse()!=null){
+			topicsMBean.setPaginator(new RepeatPaginator<Topic>(topicService.fetchTopicsByCourseId(contentProviderMBean.getSelectedCourse().getId())));
+			contentProviderMBean.getBreadCrumbs().add(contentProviderMBean.getSelectedCourse().getName());
 			toPage = "topics";
 		}
 		return toPage;
 	}
 	
 	public void toggleEnableFlag() {
-		if(userMBean.getSelectedTopic()!=null){
-			if(topicService.toggleEnableFlag(userMBean.getSelectedTopic())){
-				message = userMBean.getSelectedTopic().isEnabledFlag() ? "Info : Topic disabled" : "Info : Topic enabled" ;
+		if(contentProviderMBean.getSelectedTopic()!=null){
+			if(topicService.toggleEnableFlag(contentProviderMBean.getSelectedTopic())){
+				message = contentProviderMBean.getSelectedTopic().isEnabledFlag() ? "Info : Topic disabled" : "Info : Topic enabled" ;
 				loadTopics();
 			} else {
 				message = "Error : Failed to toggle the topic enable / disable";
@@ -100,8 +100,8 @@ public class TopicController {
 	}
 	
 	public void editTopic() {
-		if(userMBean.getSelectedTopic()!=null){
-			if(topicService.editTopic(userMBean.getSelectedTopic())){
+		if(contentProviderMBean.getSelectedTopic()!=null){
+			if(topicService.editTopic(contentProviderMBean.getSelectedTopic())){
 				loadTopics();
 				message = "Info : Topic updated successfully";
 			} else {
@@ -111,16 +111,16 @@ public class TopicController {
 	}
 	
 	public void deleteTopic() {
-		if(userMBean.getSelectedTopic()!=null){
-			topicService.deleteTopic(userMBean.getSelectedTopic());
+		if(contentProviderMBean.getSelectedTopic()!=null){
+			topicService.deleteTopic(contentProviderMBean.getSelectedTopic());
 			loadTopics();
 		}
 	}
 	
 	public void addTopic() {
 		boolean success = false;
-		if (newTopic != null && userMBean.getSelectedCourse() != null) {
-			newTopic.setCourseId(userMBean.getSelectedCourse().getId());
+		if (newTopic != null && contentProviderMBean.getSelectedCourse() != null) {
+			newTopic.setCourseId(contentProviderMBean.getSelectedCourse().getId());
 			newTopic.setSortOrder(topicsMBean.getPaginator().getRecordsTotal() + 1);
 			newTopic.setCreatedTs(new Date());
 			newTopic.setLastModifiedTs(new Date());

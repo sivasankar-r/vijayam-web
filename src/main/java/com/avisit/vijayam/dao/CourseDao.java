@@ -44,9 +44,9 @@ public class CourseDao {
 		String questionQuery = "SELECT * FROM question WHERE topicId = " + topicId + " ORDER BY questionId";
 		List<Question> questionList = jdbcTemplate.query(questionQuery, new BeanPropertyRowMapper<Question>(Question.class));
 		
-		String optionQry = "select optionId, questionId, content, correct from `option` where questionId=";
+		String optionQry = "select optionId, questionId, content, correct from `option` where questionId=?";
 		for (Question question : questionList) {
-			List<Option> options = jdbcTemplate.query( optionQry + question.getQuestionId(), new BeanPropertyRowMapper<Option>(Option.class));
+			List<Option> options = jdbcTemplate.query( optionQry,  new Object[]{ question.getQuestionId()}, new BeanPropertyRowMapper<Option>(Option.class));
 			question.setOptionsList(options);
 		}
 		return questionList;

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.QuestionsMBean;
-import com.avisit.vijayam.managed.UserMBean;
+import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.service.QuestionService;
 
 @Component
@@ -16,7 +16,7 @@ import com.avisit.vijayam.service.QuestionService;
 @Scope(value="request")
 public class QuestionController {
 	@Autowired
-	private UserMBean userMBean;
+	private ContentProviderMBean contentProviderMBean;
 	@Autowired
 	private QuestionService questionService;
 	@Autowired
@@ -30,12 +30,12 @@ public class QuestionController {
 
 	}
 	
-	public UserMBean getUserMBean() {
-		return userMBean;
+	public ContentProviderMBean getContentProviderMBean() {
+		return contentProviderMBean;
 	}
 
-	public void setUserMBean(UserMBean userMBean) {
-		this.userMBean = userMBean;
+	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
+		this.contentProviderMBean = contentProviderMBean;
 	}
 
 	public void setQuestionService(QuestionService questionService) {
@@ -73,13 +73,13 @@ public class QuestionController {
 	public String loadQuestions(){
 		message = null;
 		String toPage = "topics";
-		int size = userMBean.getBreadCrumbs().size();
+		int size = contentProviderMBean.getBreadCrumbs().size();
 		for(int i = size-1; i >= 2; i--){
-			userMBean.getBreadCrumbs().remove(i);	
+			contentProviderMBean.getBreadCrumbs().remove(i);	
 		}
-		if(userMBean.getSelectedTopic()!=null){
-			questionsMBean.setQuestionList(questionService.fetchQuestions(userMBean.getSelectedTopic().getId()));
-			userMBean.getBreadCrumbs().add(userMBean.getSelectedTopic().getName());
+		if(contentProviderMBean.getSelectedTopic()!=null){
+			questionsMBean.setQuestionList(questionService.fetchQuestions(contentProviderMBean.getSelectedTopic().getId()));
+			contentProviderMBean.getBreadCrumbs().add(contentProviderMBean.getSelectedTopic().getName());
 			toPage = "questions";
 		}
 		
@@ -87,8 +87,8 @@ public class QuestionController {
 	}
 	
 	public void deleteQuestion() {
-		if(userMBean.getSelectedQuestion()!=null){
-			questionService.deleteQuestion(userMBean.getSelectedQuestion());
+		if(contentProviderMBean.getSelectedQuestion()!=null){
+			questionService.deleteQuestion(contentProviderMBean.getSelectedQuestion());
 			loadQuestions();
 		}
 	}

@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/pages/templates/template2.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript">
+	 		function setNavCss(){
+         		document.getElementById("userManageLI").className = "active";
+         	}
+	 		
+	 		function editUserModalShow(data, email, password, deviceRegId) {
+	 			if (data.status === 'success') {
+	 		    	$('#editUserForm\\:editUserEmail').val(email);
+	 		    	$('#editUserForm\\:editUserPassword').val(password);
+	 		    	$('#editUserForm\\:editUserDeviceRegId').val(deviceRegId);
+	 		    	$('#editUserModal').modal('show');
+	 			}
+	 		}
+	 		
+	 		function editUserModalClose() {
+	 		    $('#editUserModal').modal('hide');
+	 		}
+		</script>
+		
+		<div class="span10">
+        	<h:form id="breadCrumbsForm">
+        		<ul class="breadcrumb">
+					<ui:repeat id="breadCrumbList" value="#{contentProviderMBean.breadCrumbs}" var="crumb">
+						<li>
+							<h:outputText style="color : #0090FF" value="#{crumb}"/>
+							<span class="divider">/</span>
+						</li>
+					</ui:repeat>
+				</ul>
+        	</h:form>
+        </div>
+        
+		<div class="span10" id="addNewDiv">
+			<h:form id="addNewForm">
+				<div style="padding-bottom : 10px;">
+					<h:message class="alert alert-error" style="margin:10px;" for=":addNewForm:email" />
+					<h:message class="alert alert-error" style="margin:10px;" for=":addNewForm:password" />
+				</div>
+				
+				<div class="alert" style="display:#{userController.message != null ? 'block' : 'none'}">
+			    	<h:outputText id="errorMsg" value="#{userController.message}"/>
+  				</div>
+
+				<table id="newItem" class="table table-bordered table-hover">
+					<tbody>
+						<tr>
+							<td>#</td>
+							<td><h:inputText id="email" value="#{userController.newUser.email}" required="true" validatorMessage="Email is not valid" requiredMessage="Please enter a valid email id" pt:placeholder="Email">
+									<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+								</h:inputText>
+							</td>
+							<td><h:inputText id="password" value="#{userController.newUser.password}" required="true" requiredMessage="Please enter password" pt:placeholder="Password"/></td>
+							<td><label class="checkbox"> <h:selectBooleanCheckbox
+										value="#{userController.newUser.active}"
+										id="enabledFlag" /> Enabled?
+							</label></td>
+							<td colspan="2"><h:commandLink class="btn btn-primary"
+									action="#{userController.addUser}" value="Add New">
+									<!-- <f:ajax render="@all" execute="@form" /> -->
+								</h:commandLink></td>
+						</tr>
+					</tbody>
+				</table>
+			</h:form>
+		</div>
+		
+		<div class="span10" id="viewContent">
+			<h:form id="availableUsersForm">
+				<table id="usersTable" class="table table-bordered table-hover">
+					<tr>
+						<th>S.No</th>
+						<th>Email</th>
+						<th>Password</th>
+						<th>Registration Id</th>
+						<th>Enabled</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+					<tbody>
+						<ui:repeat id="userList" value="#{usersMBean.paginator.model}"
+							var="user" varStatus="index">
+							<tr>
+								<td>#{((index.index)+1)+((usersMBean.paginator.recordsPerPage)*(usersMBean.paginator.pageIndex-1))}</td>
+								<td>#{user.email}</td>
+								<td>#{user.password}</td>
+								<td>#{user.deviceRegId}</td>
+								<td><h:commandLink id="toggleFlagLink"
+										action="#{userController.toggleEnableFlag}" rel="tooltip"
+										title="#{user.active == true ? 'Click to Disable' : 'Click to Enable'}">
+										<i
+											class="icon-large #{user.active == true ? 'icon-ok-sign green' : 'icon-remove-sign red'}"></i>
+										<f:setPropertyActionListener
+											target="#{contentProviderMBean.selectedUser}" value="#{user}" />
+									</h:commandLink></td>
+								<td><h:commandLink id="editUserLink" rel="tooltip"
+										title="Edit User">
+										<i class="icon-large icon-pencil black"></i>
+										<f:setPropertyActionListener target="#{contentProviderMBean.selectedUser}" value="#{user}" />
+										<f:ajax onevent="function(data){
+															editUserModalShow(data, '#{user.email}', '#{user.password}', '#{user.deviceRegId}')
+															}" />
+									</h:commandLink></td>
+								<td><h:commandLink id="deleteUserLink" action="#{userController.deleteUser}"
+										rel="tooltip"
+										title="Delete User">
+										<i class="icon-large icon-trash black"></i>
+										<f:setPropertyActionListener target="#{contentProviderMBean.selectedUser}" value="#{user}" />
+									</h:commandLink></td>
+							</tr>
+						</ui:repeat>
+					</tbody>
+				</table>
+
+				<ul class="pager">
+					<li class="previous"><h:commandLink value="&larr; Prev"
+							action="#{usersMBean.paginator.prev}" /></li>
+					<h:outputText
+						value="#{usersMBean.paginator.pageIndex} / #{usersMBean.paginator.pages}" />
+					<li class="next"><h:commandLink value="Next &rarr;"
+							action="#{usersMBean.paginator.next}" /></li>
+				</ul>
+				<h:inputHidden value="#{usersMBean.paginator.pageIndex}" />
+			</h:form>
+
+			<div id="editUserModal" class="modal hide fade">
+				<h:form id="editUserForm">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 id="myModalLabel" class="alert">Edit User</h3>
+					</div>
+					<div class="modal-body">
+						<table>
+							<tr>
+								<td>Email</td>
+								<td><h:inputText id="editUserEmail" style="width:200px;"
+										requiredMessage="Email Mandatory" required="true"
+										value="#{contentProviderMBean.selectedUser.email}" /></td>
+							</tr>
+							<tr>
+								<td>Password</td>
+								<td><h:inputText id="editUserPassword"
+										style="width:200px;" requiredMessage="Password Mandatory" required="true"
+										value="#{contentProviderMBean.selectedUser.password}" /></td>
+							</tr>
+							<tr>
+								<td>Registration Id</td>
+								<td><h:inputText id="editUserDeviceRegId"
+										style="width:200px;" requiredMessage="Registration Id is mandatory" required="true"
+										value="#{contentProviderMBean.selectedUser.deviceRegId}" /></td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal">Cancel</button>
+						<h:commandLink class="btn btn-primary" action="#{userController.editUser}"
+							value="Save changes">
+						</h:commandLink>
+					</div>
+				</h:form>
+			</div>
+		</div>	
+	</ui:define>
+</ui:composition>
+</html>

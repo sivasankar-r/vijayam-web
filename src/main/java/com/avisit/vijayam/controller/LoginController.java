@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.avisit.vijayam.managed.UserMBean;
+import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.model.ContentProvider;
 import com.avisit.vijayam.service.LoginService;
 
@@ -19,7 +19,7 @@ import com.avisit.vijayam.service.LoginService;
 public class LoginController {
 	Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
-	private UserMBean userMBean;
+	private ContentProviderMBean contentProviderMBean;
 	
 	@Autowired
 	private LoginService loginService;
@@ -29,12 +29,12 @@ public class LoginController {
 	@Autowired
 	private DashboardController dashboardController;	
 	
-	public UserMBean getUserMBean() {
-		return userMBean;
+	public ContentProviderMBean getContentProviderMBean() {
+		return contentProviderMBean;
 	}
 
-	public void setUserMBean(UserMBean userMBean) {
-		this.userMBean = userMBean;
+	public void setContentProviderMBean(ContentProviderMBean contentProviderMBean) {
+		this.contentProviderMBean = contentProviderMBean;
 	}
 	
 	public LoginService getLoginService() {
@@ -57,18 +57,18 @@ public class LoginController {
 		String toPage = null;
 		ContentProvider contentProvider = null;
 		try {
-			contentProvider = loginService.isValidUser(userMBean.getContentProvider().getUsername(), userMBean.getContentProvider().getPassword());
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", userMBean.getContentProvider().getUsername());
-			logger.info("Login Successful... Username : " + userMBean.getContentProvider().getUsername());
+			contentProvider = loginService.isValidUser(contentProviderMBean.getContentProvider().getUsername(), contentProviderMBean.getContentProvider().getPassword());
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", contentProviderMBean.getContentProvider().getUsername());
+			logger.info("Login Successful... Username : " + contentProviderMBean.getContentProvider().getUsername());
 			setLoginMessage(null);
 		} catch (Exception e) {
 			setLoginMessage(e.getMessage());
 			logger.error(e.getMessage(), e);
 		}
 		if(contentProvider!=null){
-			userMBean.getContentProvider().setContentProviderId(contentProvider.getContentProviderId());
-			userMBean.getContentProvider().setName(contentProvider.getName());
-			userMBean.getContentProvider().setUsername(contentProvider.getUsername());
+			contentProviderMBean.getContentProvider().setContentProviderId(contentProvider.getContentProviderId());
+			contentProviderMBean.getContentProvider().setName(contentProvider.getName());
+			contentProviderMBean.getContentProvider().setUsername(contentProvider.getUsername());
 			toPage = dashboardController.loadDashboard();
 		}		
 		return toPage;

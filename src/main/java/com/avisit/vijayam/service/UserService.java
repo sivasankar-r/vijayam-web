@@ -1,5 +1,7 @@
 package com.avisit.vijayam.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +26,28 @@ public class UserService {
 		return success;
 	} 
 	
+	public List<User> fetchUsers(String contentProviderId){
+		return userDao.fetchUsers(contentProviderId);
+	}
+
+	public boolean addNew(User user) {
+		return userDao.insertUser(user) > 0;
+	}
+
+	public boolean toggleEnableFlag(User user) {
+		return userDao.toggleEnableFlag(user) == 1;
+	}
+
+	public boolean editUser(User user) {
+		return userDao.editUser(user) > 0;
+	}
+
+	public int deleteUser(User user) {
+		return userDao.deleteUser(user);
+	}
+	
+	public boolean isValidUser(User user){
+		return userDao.isUserExist(user);
+	}
 	
 }

@@ -17,7 +17,9 @@ import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.common.InternalServerException;
 import com.avisit.vijayam.model.Course;
+import com.avisit.vijayam.model.User;
 import com.avisit.vijayam.service.CourseService;
+import com.avisit.vijayam.service.UserService;
 
 @Component
 @Path("/courses")
@@ -25,6 +27,8 @@ public class CourseRestService {
 	
 	@Autowired
 	private CourseService courseService;
+	@Autowired
+	private UserService userService;
 	
 	@GET
 	@Path("/all")
@@ -47,11 +51,19 @@ public class CourseRestService {
 		List<Course> courseList = null;
 		if(params !=null && !params.isEmpty()){
 			try{
-				courseList = courseService.fetchCourseTreeByProvider(params.getFirst("contentProviderId"));
+				User user = new User();
+				user.setEmail(params.getFirst("email"));
+				user.setPassword(params.getFirst("password"));
+				user.setContentProviderId(params.getFirst("contentProviderId"));
+				if(userService.isValidUser(user)) {
+					courseList = courseService.fetchCourseTreeByProvider(params.getFirst("contentProviderId"));
+				} else {
+					throw new Exception("User doesn't exist");
+				}
 			} catch(DataAccessException exception){
 				throw new InternalServerException("Unknown Exception Occurred");
-			} catch (NumberFormatException nfe) {
-				throw new InternalServerException("Content provider id should be a valid integer");
+			} catch (Exception e) {
+				throw new InternalServerException(e.getMessage());
 			}
 		}
 		

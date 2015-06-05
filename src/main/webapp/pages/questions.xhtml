@@ -18,7 +18,7 @@
 			
 			<h:form id="breadCrumbsForm">
         		<ul class="breadcrumb">
-					<ui:repeat id="breadCrumbList" value="#{userMBean.breadCrumbs}" var="crumb">
+					<ui:repeat id="breadCrumbList" value="#{contentProviderMBean.breadCrumbs}" var="crumb">
 						<li>
 							<h:outputText style="color : #0090FF" value="#{crumb}"/>
 							<span class="divider">/</span>
@@ -67,7 +67,7 @@
 										action="#{questionController.deleteQuestion}" rel="tooltip"
 										title="Delete Question">
 										<i class="icon-large icon-trash black"></i>
-										<f:setPropertyActionListener target="#{userMBean.selectedQuestion}" value="#{question}" />
+										<f:setPropertyActionListener target="#{contentProviderMBean.selectedQuestion}" value="#{question}" />
 									</h:commandLink></td>
 							</tr>
 						</ui:repeat>

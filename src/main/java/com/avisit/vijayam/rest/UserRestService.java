@@ -49,7 +49,7 @@ public class UserRestService {
 				user.setContentProviderId(params.getFirst("contentProviderId"));
 				user.setEmail(params.getFirst("email"));
 				user.setPassword(params.getFirst("password"));
-				user.setRegistrationId(params.getFirst("registrationId"));
+				user.setDeviceRegId(params.getFirst("registrationId"));
 				
 				response = userService.register(user);
 			}
