@@ -77,10 +77,8 @@ public class CourseController {
 	public String loadCourses() {
 		message = null;
 		contentProviderMBean.setSelectedCourse(new Course());
-		int size = contentProviderMBean.getBreadCrumbs().size();
-		for(int i = size-1; i > 0; i--){
-			contentProviderMBean.getBreadCrumbs().remove(i);	
-		}
+		contentProviderMBean.getBreadCrumbs().clear();
+		contentProviderMBean.getBreadCrumbs().add("All Courses");
 		coursesMBean.setPaginator(new RepeatPaginator<Course>(courseService.fetchCourseByProvider(contentProviderMBean.getContentProvider().getContentProviderId())));
 		return "courses";
 	}
