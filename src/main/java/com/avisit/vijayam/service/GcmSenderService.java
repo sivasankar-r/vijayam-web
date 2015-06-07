@@ -8,14 +8,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.avisit.vijayam.model.GcmContent;
+import com.avisit.vijayam.rest.UserRestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class GcmSenderService {
-	
+	public static final Logger logger = LoggerFactory.getLogger(UserRestService.class);
 	public void post(String apiKey, GcmContent gcmContent) {
 		try {
 			URL url = new URL("https://android.googleapis.com/gcm/send");
@@ -46,9 +49,9 @@ public class GcmSenderService {
 			in.close();
 			System.out.println(response.toString());
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 }

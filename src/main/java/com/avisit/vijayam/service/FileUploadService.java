@@ -60,6 +60,7 @@ public class FileUploadService implements Serializable{
 			HSSFSheet questionSheet = workBook.getSheetAt(0);
 			boolean validQuestionTemplate = validateHorizontalHeaderTemplate(workBook, questionSheet, FileUploadService.questionSheetHeaderList);
 			
+			int sortOrder = questionService.fetchMaxSortOrder(topic) + 1;
 			if (validQuestionTemplate) {
 				HSSFRow rowData;
 				int lastRowNum = questionSheet.getLastRowNum();
@@ -67,7 +68,9 @@ public class FileUploadService implements Serializable{
 					rowData = questionSheet.getRow(row);
 					Question question = prepareQuestionFromRow(rowData, workBook);
 					question.setTopicId(topic.getId());
+					question.setSortOrder(sortOrder);
 					questionService.persistQuestion(question);
+					sortOrder++;
 				}
 			} else {
 				throw new Exception("Invalid Questions Sheet. Please download the template");

@@ -1,5 +1,6 @@
 package com.avisit.vijayam.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,15 @@ public class CourseService {
 	}
 
 	public boolean addNew(Course newCourse) {
-		return courseDao.insertCourse(newCourse) > 0;
+		boolean flag = false;
+		if(newCourse!=null){
+			int sortOrder = courseDao.fetchMaxSortOrder(newCourse.getContentProviderId());
+			newCourse.setSortOrder(sortOrder + 1);
+			newCourse.setCreatedTs(new Date());
+			newCourse.setLastModifiedTs(new Date());
+			flag = courseDao.insertCourse(newCourse) > 0;
+		}
+		return flag;
 	}
 
 	public boolean toggleEnableFlag(Course course) {

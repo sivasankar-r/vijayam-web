@@ -59,11 +59,10 @@ public class LoginController {
 		try {
 			contentProvider = loginService.isValidUser(contentProviderMBean.getContentProvider().getUsername(), contentProviderMBean.getContentProvider().getPassword());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", contentProviderMBean.getContentProvider().getUsername());
-			logger.info("Login Successful... Username : " + contentProviderMBean.getContentProvider().getUsername());
 			setLoginMessage(null);
 		} catch (Exception e) {
 			setLoginMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
+			logger.error(e.getMessage());
 		}
 		if(contentProvider!=null){
 			contentProviderMBean.getContentProvider().setContentProviderId(contentProvider.getContentProviderId());

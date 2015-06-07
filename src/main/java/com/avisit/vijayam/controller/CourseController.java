@@ -1,7 +1,5 @@
 package com.avisit.vijayam.controller;
 
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
@@ -9,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.managed.CoursesMBean;
 import com.avisit.vijayam.managed.RepeatPaginator;
-import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.model.Course;
 import com.avisit.vijayam.service.CourseService;
 
@@ -87,9 +85,6 @@ public class CourseController {
 		boolean success = false;
 		if (newCourse != null) {
 			newCourse.setContentProviderId(contentProviderMBean.getContentProvider().getContentProviderId());
-			newCourse.setSortOrder(coursesMBean.getPaginator().getRecordsTotal() + 1);
-			newCourse.setCreatedTs(new Date());
-			newCourse.setLastModifiedTs(new Date());
 			success = courseService.addNew(newCourse);
 		}
 		if (success) {

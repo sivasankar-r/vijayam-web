@@ -7,6 +7,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,7 @@ import com.avisit.vijayam.service.UserService;
 @Component
 @Path("/user")
 public class UserRestService {
-	
+	public static final Logger logger = LoggerFactory.getLogger(UserRestService.class);
 	@Autowired
 	private UserService userService;
 	
@@ -32,7 +34,7 @@ public class UserRestService {
 			}
 		} catch (Exception e){
 			response = e.getMessage();
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return response;
 	}
@@ -55,7 +57,7 @@ public class UserRestService {
 			}
 		} catch (Exception e){
 			response = e.getMessage();
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return response;
 	}
@@ -74,7 +76,7 @@ public class UserRestService {
 			}
 		} catch (Exception e){
 			response = e.getMessage();
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return response;
 	}

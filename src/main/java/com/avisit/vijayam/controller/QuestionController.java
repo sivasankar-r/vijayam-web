@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.avisit.vijayam.managed.QuestionsMBean;
 import com.avisit.vijayam.managed.ContentProviderMBean;
+import com.avisit.vijayam.model.Question;
 import com.avisit.vijayam.service.QuestionService;
 
 @Component
@@ -22,8 +23,6 @@ public class QuestionController {
 	@Autowired
 	private QuestionsMBean questionsMBean;
 	private String message;
-	private String newOptionText;
-	
 	
 	@PostConstruct
 	public void init() {
@@ -62,14 +61,6 @@ public class QuestionController {
 		this.message = message;
 	}
 
-	public String getNewOptionText() {
-		return newOptionText;
-	}
-
-	public void setNewOptionText(String newOptionText) {
-		this.newOptionText = newOptionText;
-	}
-
 	public String loadQuestions(){
 		message = null;
 		String toPage = "topics";
@@ -87,8 +78,10 @@ public class QuestionController {
 	}
 	
 	public void deleteQuestion() {
-		if(contentProviderMBean.getSelectedQuestion()!=null){
-			questionService.deleteQuestion(contentProviderMBean.getSelectedQuestion());
+		Question selectedQuestion = contentProviderMBean.getSelectedQuestion();
+		if(selectedQuestion!=null){
+			selectedQuestion.setTopicId(contentProviderMBean.getSelectedTopic().getId());
+			questionService.deleteQuestion(selectedQuestion);
 			loadQuestions();
 		}
 	}

@@ -13,6 +13,7 @@ import com.avisit.vijayam.dao.OptionDao;
 import com.avisit.vijayam.dao.QuestionDao;
 import com.avisit.vijayam.model.Option;
 import com.avisit.vijayam.model.Question;
+import com.avisit.vijayam.model.Topic;
 
 @Service
 public class QuestionService {
@@ -44,7 +45,7 @@ public class QuestionService {
 					questionDao.persistOptions(question.getQuestionId(), option);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Failed to update question.", e);
 			}
 		}
 	}
@@ -54,7 +55,6 @@ public class QuestionService {
 		if(question!=null && !question.getContent().trim().isEmpty()){
 			try {
 				questionId = questionDao.createAndReturnQuestionId(question);
-				logger.info("QuestionId : "+questionId+" added successfully");	
 			} catch (SQLException e) {
 				throw new Exception("Exception occurred in creating question with question content \""+question.getContent()+"\"", e);
 			}
@@ -66,10 +66,8 @@ public class QuestionService {
 					} catch (SQLException e) {
 						throw new Exception("Exception occurred in persisting optionId : " + option.getOptionId()+ "for the question \""+question.getContent()+"\"", e);
 					}
-					if(rowsUpdated>0){
-						logger.info("Persisted Question ID: "+questionId+ ", optionId: "+option.getOptionId());
-					}else{
-						logger.error("Failed to Persist Question ID: "+questionId+ ", optionId: "+option.getOptionId());
+					if(rowsUpdated<=0){
+						throw new Exception("Failed to Persist Option! --> Question ID: "+questionId+ ", optionId: "+option.getOptionId());
 					}
 				}
 			}
@@ -79,5 +77,9 @@ public class QuestionService {
 
 	public int deleteQuestion(Question question) {
 		return questionDao.deleteQuestion(question);
+	}
+
+	public int fetchMaxSortOrder(Topic topic) {
+		return questionDao.fetchMaxSortOrder(topic.getId());
 	}
 }

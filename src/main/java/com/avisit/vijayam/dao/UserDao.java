@@ -21,8 +21,8 @@ public class UserDao {
 		int updateCount = 0;
 		if(isContentProviderExist(user)){
 			if(isUserExist(user)){
-				updateCount = jdbcTemplate.update("UPDATE user SET deviceRegId=?, active=?, createdTS=? WHERE email = ? AND contentProviderId = ?", new Object[] { user.getDeviceRegId(), 1, new Timestamp(new Date().getTime()), user.getEmail(), user.getContentProviderId()});
-				response = updateCount == 1 ? "SUCCESS" : "Failed to register";
+				updateCount = jdbcTemplate.update("UPDATE user SET deviceRegId=?, updatedTs=? WHERE email = ? AND contentProviderId = ? and active=1", new Object[] { user.getDeviceRegId(), new Timestamp(new Date().getTime()), user.getEmail(), user.getContentProviderId()});
+				response = updateCount == 1 ? "SUCCESS" : "User not activiated by admin";
 			} else {
 				response = "Invalid email or password";
 			}

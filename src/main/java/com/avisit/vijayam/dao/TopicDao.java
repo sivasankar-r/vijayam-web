@@ -77,4 +77,24 @@ public class TopicDao {
 		}
 		return id;
 	}
+	
+	/**
+	 * Returns the maximum sort order value available in the topic table for the input course id
+	 * 
+	 * @param courseId course id
+	 * @return int max sort order available
+	 */
+	public int fetchMaxSortOrder(int courseId) {
+		int value = 0;
+		if(courseId > 0){
+			String query = "select sortOrder from topic where courseId = ? order by sortOrder desc limit 1";
+			try{
+				value = jdbcTemplate.queryForObject(query, new Object[] {courseId}, Integer.class);
+			} catch(EmptyResultDataAccessException e){
+				// supress exception; already value is 0;
+			}
+			
+		}
+		return value;
+	}
 }

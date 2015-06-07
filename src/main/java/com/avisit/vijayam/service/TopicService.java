@@ -1,6 +1,7 @@
 package com.avisit.vijayam.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,15 @@ public class TopicService {
 	}
 
 	public boolean addNew(Topic topic) {
-		return topicDao.insertTopic(topic) > 0;
+		boolean flag = false;
+		if(topic!=null){
+			int sortOrder = topicDao.fetchMaxSortOrder(topic.getCourseId());
+			topic.setSortOrder(sortOrder + 1);
+			topic.setCreatedTs(new Date());
+			topic.setLastModifiedTs(new Date());
+			flag = topicDao.insertTopic(topic) > 0;
+		}
+		
+		return flag;
 	}
 }

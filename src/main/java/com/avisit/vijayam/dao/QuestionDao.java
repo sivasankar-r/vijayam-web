@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -78,6 +79,19 @@ public class QuestionDao {
 	}
 
 	public int deleteQuestion(Question question) {
-		return jdbcTemplate.update("call proc_delete_question_tree(?)", question.getQuestionId());
+		return jdbcTemplate.update("call proc_delete_question_tree(?,?)", question.getQuestionId(), question.getTopicId());
+	}
+
+	public int fetchMaxSortOrder(int topicId) {
+		int value = 0;
+		if(topicId > 0){
+			String query = "select sortOrder from question where topicId = ? order by sortOrder desc limit 1";
+			try{
+				value = jdbcTemplate.queryForObject(query, new Object[] {topicId}, Integer.class);
+			} catch(EmptyResultDataAccessException e){
+				// supress exception; already value is 0;
+			}
+		}
+		return value;
 	}
 }

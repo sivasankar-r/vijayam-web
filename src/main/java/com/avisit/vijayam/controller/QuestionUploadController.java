@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.avisit.vijayam.common.Constant;
 import com.avisit.vijayam.managed.ContentProviderMBean;
 import com.avisit.vijayam.service.FileUploadService;
+import com.avisit.vijayam.service.QuestionService;
 
 @Component
 @ManagedBean(name = "questionUploadController")
@@ -21,6 +22,8 @@ import com.avisit.vijayam.service.FileUploadService;
 public class QuestionUploadController {
 	@Autowired
 	private FileUploadService fileUploadService;
+	@Autowired
+	private QuestionService questionService;
 	@Autowired
 	private ContentProviderMBean contentProviderMBean;
 	@Autowired

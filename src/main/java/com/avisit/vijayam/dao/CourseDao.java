@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -88,5 +89,24 @@ public class CourseDao {
 
 	public int deleteCourse(Course course) {
 		return jdbcTemplate.update("call proc_delete_course_tree(?)", course.getId());
+	}
+
+	/**
+	 * Returns the maximum sort order value available in the course table for the input content provider id
+	 * 
+	 * @param contentProviderId content provider id
+	 * @return int max sort order available
+	 */
+	public int fetchMaxSortOrder(String contentProviderId) {
+		int value = 0;
+		if(contentProviderId!= null && !contentProviderId.isEmpty()){
+			String query = "select sortOrder from course where contentProviderId = ? order by sortOrder desc limit 1";
+			try{
+				value = jdbcTemplate.queryForObject(query, new Object[] {contentProviderId}, Integer.class);
+			} catch(EmptyResultDataAccessException e){
+				// supress exception; already value is 0;
+			}
+		}
+		return value;
 	}
 }
